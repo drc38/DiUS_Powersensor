@@ -12,13 +12,11 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Config
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
 from .api import DiusApiClient
-from .const import CONF_PASSWORD
-from .const import CONF_USERNAME
+from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT
 from .const import DOMAIN
 from .const import PLATFORMS
 from .const import STARTUP_MESSAGE
@@ -39,11 +37,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
 
-    username = entry.data.get(CONF_USERNAME)
-    password = entry.data.get(CONF_PASSWORD)
+    host = entry.data.get(CONF_HOST)
+    port = entry.data.get(CONF_PORT)
 
-    session = async_get_clientsession(hass)
-    client = DiusApiClient(username, password, session)
+    client = await DiusApiClient(host, port).start()
 
     coordinator = DiusDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()

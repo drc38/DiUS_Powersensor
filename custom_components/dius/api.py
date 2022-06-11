@@ -1,75 +1,95 @@
 """Sample API Client."""
 import asyncio
+import json
 import logging
 import socket
 
-import aiohttp
-import async_timeout
 
-TIMEOUT = 10
+from .enums import Msg_keys, Msg_values
 
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
-HEADERS = {"Content-type": "application/json; charset=UTF-8"}
 
 
 class DiusApiClient:
     def __init__(
-        self, username: str, password: str, session: aiohttp.ClientSession
+        self, host: str, port: int
     ) -> None:
         """Sample API Client."""
-        self._username = username
-        self._passeword = password
-        self._session = session
+        self._host = host
+        self._port = port
+        self._server_address = (host, port)
+        self._socket =  socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._open = False
+        self._data = {}
+    
+    async def start(self):
+        """Start socket and listen"""
+        await self.run([self.open_socket(), self.listen()])
 
+    async def listen(self):
+        """Listen for incoming messages"""
+        while self._open:
+            message = await self._socket.recv()
+            _LOGGER.debug('Received message %s', message)
+            await self.process_message(message)
+
+    async def open_socket(self):
+        """Open connection and subscribe to data"""
+        self._socket.connect(self._server_address)
+        self._open = True
+        while True:
+            await self.subscribe()
+            await asyncio.sleep(150)
+            
+    async def process_message(self, raw_msg):
+        """Process json messages received"""
+        msg = json.loads(raw_msg)
+
+        type = msg.get(Msg_keys.type)
+        subtype = msg.get(Msg_keys.subtype)
+        device = msg.get(Msg_keys.device)
+
+        if type == Msg_values.instant_power:
+            if device == Msg_values.sensor:
+                self._data[Msg_values.sensor] = msg
+            if device == Msg_values.plug:
+                self._data[Msg_values.plug] = msg
+
+        if type == Msg_values.subscription and subtype == Msg_values.warning:
+            _LOGGER.warning('The socket stream had a warning, resubscribing')
+            await self.subscribe()
+
+        if type == Msg_values.subscription and subtype == Msg_values.expiry:
+            _LOGGER.warning('The socket stream expired, reconnecting')
+            await self.close_socket()
+            # add code to reconnect
+    
+    async def subscribe(self):
+        """Subscribe to gateway output"""
+        self._socket.send('subscribe(180)\n')
+    
+    async def close_socket(self):
+        """Close socket connection"""
+        self._socket.close()
+        self._open = False
+    
     async def async_get_data(self) -> dict:
         """Get data from the API."""
-        url = "https://jsonplaceholder.typicode.com/posts/1"
-        return await self.api_wrapper("get", url)
+        return self._data
 
-    async def async_set_title(self, value: str) -> None:
-        """Get data from the API."""
-        url = "https://jsonplaceholder.typicode.com/posts/1"
-        await self.api_wrapper("patch", url, data={"title": value}, headers=HEADERS)
-
-    async def api_wrapper(
-        self, method: str, url: str, data: dict = {}, headers: dict = {}
-    ) -> dict:
-        """Get information from the API."""
+    async def run(self, tasks):
+        """Run a specified list of tasks."""
+        self.tasks = [asyncio.ensure_future(task) for task in tasks]
         try:
-            async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
-                if method == "get":
-                    response = await self._session.get(url, headers=headers)
-                    return await response.json()
-
-                elif method == "put":
-                    await self._session.put(url, headers=headers, json=data)
-
-                elif method == "patch":
-                    await self._session.patch(url, headers=headers, json=data)
-
-                elif method == "post":
-                    await self._session.post(url, headers=headers, json=data)
-
-        except asyncio.TimeoutError as exception:
+            await asyncio.gather(*self.tasks)
+        except asyncio.TimeoutError:
+            pass
+        except Exception as other_exception:
             _LOGGER.error(
-                "Timeout error fetching information from %s - %s",
-                url,
-                exception,
+                f"Unexpected exception in connection: '{other_exception}'",
+                exc_info=True,
             )
-
-        except (KeyError, TypeError) as exception:
-            _LOGGER.error(
-                "Error parsing information from %s - %s",
-                url,
-                exception,
-            )
-        except (aiohttp.ClientError, socket.gaierror) as exception:
-            _LOGGER.error(
-                "Error fetching information from %s - %s",
-                url,
-                exception,
-            )
-        except Exception as exception:  # pylint: disable=broad-except
-            _LOGGER.error("Something really wrong happened! - %s", exception)
+        finally:
+            pass

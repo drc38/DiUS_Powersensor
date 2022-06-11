@@ -5,8 +5,7 @@ from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .api import DiusApiClient
-from .const import CONF_PASSWORD
-from .const import CONF_USERNAME
+from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT
 from .const import DOMAIN
 from .const import PLATFORMS
 
@@ -31,11 +30,11 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             valid = await self._test_credentials(
-                user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
+                user_input[CONF_HOST], user_input[CONF_PORT]
             )
             if valid:
                 return self.async_create_entry(
-                    title=user_input[CONF_USERNAME], data=user_input
+                    title=user_input[CONF_HOST], data=user_input
                 )
             else:
                 self._errors["base"] = "auth"
@@ -54,12 +53,12 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
-                {vol.Required(CONF_USERNAME): str, vol.Required(CONF_PASSWORD): str}
+                {vol.Required(CONF_HOST, default=DEFAULT_HOST): str, vol.Required(CONF_PORT, default=DEFAULT_PORT): int}
             ),
             errors=self._errors,
         )
 
-    async def _test_credentials(self, username, password):
+    async def _test_credentials(self, host, port):
         """Return true if credentials is valid."""
         try:
             session = async_create_clientsession(self.hass)

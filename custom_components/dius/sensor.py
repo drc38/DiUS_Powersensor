@@ -5,6 +5,8 @@ from .const import ICON
 from .const import SENSOR
 from .entity import DiusEntity
 
+from .enums import Msg_keys
+
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
@@ -23,7 +25,7 @@ class DiusSensor(DiusEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self.coordinator.data.get("body")
+        return self.coordinator.data.get(Msg_keys.power)
 
     @property
     def icon(self):

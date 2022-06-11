@@ -2,11 +2,11 @@
   "config": {
     "step": {
       "user": {
-        "title": "DiUS_Powersensor",
+        "title": "DiUS Powersensor",
         "description": "If you need help with the configuration have a look here: https://github.com/drc38/DiUS_Powersensor",
         "data": {
-          "username": "Username",
-          "password": "Password"
+          "host": "Gateway IP address",
+          "port": "Gateway port"
         }
       }
     },
