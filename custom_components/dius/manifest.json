@@ -1,0 +1,10 @@
+{
+  "domain": "dius",
+  "name": "DiUS_Powersensor",
+  "documentation": "https://github.com/drc38/DiUS_Powersensor",
+  "issue_tracker": "https://github.com/drc38/DiUS_Powersensor/issues",
+  "dependencies": [],
+  "config_flow": true,
+  "codeowners": ["@drc38"],
+  "requirements": []
+}
