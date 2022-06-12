@@ -21,9 +21,8 @@
     "step": {
       "user": {
         "data": {
-          "binary_sensor": "Binary sensor enabled",
-          "sensor": "Sensor enabled",
-          "switch": "Switch enabled"
+          "plug": "Plug enabled",
+          "sensor": "Sensor enabled"
         }
       }
     }

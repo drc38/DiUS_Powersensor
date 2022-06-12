@@ -37,6 +37,7 @@ class DiusApiClient:
         """Open connection and subscribe to data."""
         self._socket.connect(self._server_address)
         self._open = True
+        _LOGGER.info("The socket stream is connected, subscribing")
         while True:
             await self.subscribe()
             await asyncio.sleep(150)
