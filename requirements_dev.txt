@@ -1,1 +1,4 @@
-homeassistant>=2021.12.0
+homeassistant==2022.06.4
+pre-commit
+flake8
+reorder-python-imports

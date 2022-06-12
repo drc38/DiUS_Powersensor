@@ -2,10 +2,12 @@
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
-from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .api import DiusApiClient
-from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT
+from .const import CONF_HOST
+from .const import CONF_PORT
+from .const import DEFAULT_HOST
+from .const import DEFAULT_PORT
 from .const import DOMAIN
 from .const import PLATFORMS
 
@@ -53,7 +55,10 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
-                {vol.Required(CONF_HOST, default=DEFAULT_HOST): str, vol.Required(CONF_PORT, default=DEFAULT_PORT): int}
+                {
+                    vol.Required(CONF_HOST, default=DEFAULT_HOST): str,
+                    vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
+                }
             ),
             errors=self._errors,
         )
@@ -61,8 +66,7 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def _test_credentials(self, host, port):
         """Return true if credentials is valid."""
         try:
-            session = async_create_clientsession(self.hass)
-            client = DiusApiClient(username, password, session)
+            client = DiusApiClient(host, port)
             await client.async_get_data()
             return True
         except Exception:  # pylint: disable=broad-except
@@ -101,5 +105,5 @@ class DiusOptionsFlowHandler(config_entries.OptionsFlow):
     async def _update_options(self):
         """Update config entry options."""
         return self.async_create_entry(
-            title=self.config_entry.data.get(CONF_USERNAME), data=self.options
+            title=self.config_entry.data.get(CONF_HOST), data=self.options
         )
