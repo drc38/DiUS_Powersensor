@@ -22,18 +22,19 @@ class DiusApiClient:
         self._data = {}
 
     async def start(self):
-        """Start socket and listen"""
+        """Start socket and listen."""
         await self.run([self.open_socket(), self.listen()])
 
     async def listen(self):
-        """Listen for incoming messages"""
+        """Listen for incoming messages."""
         while self._open:
             message = self._socket.recv(1024)
-            _LOGGER.debug("Received message %s", message)
+            # _LOGGER.debug("Received message %s", message)
             await self.process_message(message)
+            await asyncio.sleep(1)
 
     async def open_socket(self):
-        """Open connection and subscribe to data"""
+        """Open connection and subscribe to data."""
         self._socket.connect(self._server_address)
         self._open = True
         while True:
@@ -41,34 +42,38 @@ class DiusApiClient:
             await asyncio.sleep(150)
 
     async def process_message(self, raw_msg):
-        """Process json messages received"""
+        """Process json messages received."""
         msg = json.loads(raw_msg)
+        _LOGGER.debug("Received message json: %s", msg)
 
-        type = msg.get(Msg_keys.type)
-        subtype = msg.get(Msg_keys.subtype)
-        device = msg.get(Msg_keys.device)
+        type = msg.get(Msg_keys.type.value)
+        subtype = msg.get(Msg_keys.subtype.value)
+        device = msg.get(Msg_keys.device.value)
 
-        if type == Msg_values.instant_power:
-            if device == Msg_values.sensor:
-                self._data[Msg_values.sensor] = msg
-            if device == Msg_values.plug:
-                self._data[Msg_values.plug] = msg
+        if type == Msg_values.instant_power.value:
+            if device == Msg_values.sensor.value:
+                self._data[Msg_values.sensor.value] = msg
+            if device == Msg_values.plug.value:
+                self._data[Msg_values.plug.value] = msg
 
-        if type == Msg_values.subscription and subtype == Msg_values.warning:
+        if (
+            type == Msg_values.subscription.value
+            and subtype == Msg_values.warning.value
+        ):
             _LOGGER.warning("The socket stream had a warning, resubscribing")
             await self.subscribe()
 
-        if type == Msg_values.subscription and subtype == Msg_values.expiry:
+        if type == Msg_values.subscription.value and subtype == Msg_values.expiry.value:
             _LOGGER.warning("The socket stream expired, reconnecting")
             await self.close_socket()
             # add code to reconnect
 
     async def subscribe(self):
-        """Subscribe to gateway output"""
+        """Subscribe to gateway output."""
         self._socket.send(b"subscribe(180)\n")
 
     async def close_socket(self):
-        """Close socket connection"""
+        """Close socket connection."""
         self._socket.close()
         self._open = False
 

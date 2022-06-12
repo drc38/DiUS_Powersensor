@@ -41,7 +41,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     host = entry.data.get(CONF_HOST)
     port = entry.data.get(CONF_PORT)
 
-    client = await DiusApiClient(host, port).start()
+    client = DiusApiClient(host, port)
+    hass.async_create_task(client.start())
 
     coordinator = DiusDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
@@ -59,6 +60,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             )
 
     entry.add_update_listener(async_reload_entry)
+
     return True
 
 

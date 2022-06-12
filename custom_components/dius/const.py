@@ -1,4 +1,6 @@
 """Constants for DiUS_Powersensor."""
+from .enums import Msg_values
+
 # Base component constants
 NAME = "DiUS_Powersensor"
 DOMAIN = "dius"
@@ -9,7 +11,8 @@ ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
 ISSUE_URL = "https://github.com/drc38/DiUS_Powersensor/issues"
 
 # Icons
-ICON = "mdi:format-quote-close"
+MAIN_ICON = "mdi:home-lightning-bolt-outline"
+PLUG_ICON = "mdi:power-plug-outline"
 
 # Device classes
 BINARY_SENSOR_DEVICE_CLASS = "connectivity"
@@ -19,6 +22,11 @@ BINARY_SENSOR = "binary_sensor"
 SENSOR = "sensor"
 SWITCH = "switch"
 PLATFORMS = [SENSOR]
+
+# Sensors
+PLUG = Msg_values.plug.value
+MAIN_POWER = Msg_values.sensor.value
+SENSORS = [MAIN_POWER, PLUG]
 
 
 # Configuration and options

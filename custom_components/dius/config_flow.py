@@ -9,7 +9,7 @@ from .const import CONF_PORT
 from .const import DEFAULT_HOST
 from .const import DEFAULT_PORT
 from .const import DOMAIN
-from .const import PLATFORMS
+from .const import SENSORS
 
 
 class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
@@ -97,7 +97,7 @@ class DiusOptionsFlowHandler(config_entries.OptionsFlow):
             data_schema=vol.Schema(
                 {
                     vol.Required(x, default=self.options.get(x, True)): bool
-                    for x in sorted(PLATFORMS)
+                    for x in sorted(SENSORS)
                 }
             ),
         )

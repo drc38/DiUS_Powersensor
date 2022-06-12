@@ -1,4 +1,5 @@
 """DiusEntity class"""
+from custom_components.dius.enums import Msg_keys
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION
@@ -15,7 +16,7 @@ class DiusEntity(CoordinatorEntity):
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return self.config_entry.entry_id
+        return self.coordinator.data.get(Msg_keys.mac.value)
 
     @property
     def device_info(self):
@@ -31,6 +32,6 @@ class DiusEntity(CoordinatorEntity):
         """Return the state attributes."""
         return {
             "attribution": ATTRIBUTION,
-            "id": str(self.coordinator.data.get("id")),
+            "id": str(self.coordinator.data.get(Msg_keys.mac.value)),
             "integration": DOMAIN,
         }
