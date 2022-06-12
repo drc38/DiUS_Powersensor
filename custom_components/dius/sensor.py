@@ -4,7 +4,6 @@ from .const import DOMAIN
 from .const import ICON
 from .const import SENSOR
 from .entity import DiusEntity
-
 from .enums import Msg_keys
 
 
@@ -35,4 +34,4 @@ class DiusSensor(DiusEntity):
     @property
     def device_class(self):
         """Return de device class of the sensor."""
-        return "dius__custom_device_class"
+        return "dius__custom_device"

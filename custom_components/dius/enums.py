@@ -1,5 +1,5 @@
 """Additional enumerated values to use in home assistant."""
-from enum import Enum, IntFlag, auto
+from enum import Enum
 
 
 class Msg_keys(str, Enum):
@@ -21,8 +21,8 @@ class Msg_keys(str, Enum):
     type = "type"
     unit = "unit"
     voltage = "voltage"
-    
-    
+
+
 class Msg_values(str, Enum):
     """Message values from sensor."""
 

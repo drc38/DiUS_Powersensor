@@ -16,7 +16,8 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
 from .api import DiusApiClient
-from .const import CONF_HOST, CONF_PORT, DEFAULT_HOST, DEFAULT_PORT
+from .const import CONF_HOST
+from .const import CONF_PORT
 from .const import DOMAIN
 from .const import PLATFORMS
 from .const import STARTUP_MESSAGE
