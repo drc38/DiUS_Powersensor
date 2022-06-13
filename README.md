@@ -5,19 +5,19 @@
 
 [![hacs][hacsbadge]][hacs]
 [![Project Maintenance][maintenance-shield]][user_profile]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
 # Powersensor Home Assistant full integration prototype
 
-This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au) integration with Home Assistant. Kudos to @izevaka `https://github.com/izevaka/powersensor-home-assistant` for figuring out the sensor interface.
+This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au) integration with Home Assistant. Kudos to (@izevaka)(https://github.com/izevaka/powersensor-home-assistant) for figuring out the sensor interface.
 
 # TO DO
 
 1. Make the connection more robust (reconnect/close etc)
 1. Switch from 30s polling to push
+2. Add extra sensors
 
 # Installation
 
@@ -46,17 +46,21 @@ Once done, you should see the new repository, appearing in a list like this. Cli
 4. Download _all_ the files from the `custom_components/dius/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
 6. Restart Home Assistant
-7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "DiUS_Powersensor"
+7. In the HA UI go to "Integrations" click "+" and search for "DiUS_Powersensor"
 
 # Configuration
 
 Configuration of the integration is done within the Integrations Panel in Home Assistant.
 
-1. Click on Configuration, then Integrations
+1. Navigate to Integrations
 1. Click _Add Integration_
 1. Search for DiUS Powersensor
 1. Find your plug/gateway's IP address in the Powersensor mobile app
 
+![image](https://user-images.githubusercontent.com/20024196/173300192-4092430e-3421-4a5c-a422-3ba066e58856.png)
+
+1. Enter the IP address in the configuration, NB set your router to prevent the IP changing
+2. By default the Main Power sensor and Plug sensor are configured, they can be unselected by clicking _Configure_
 <!---->
 
 ## Contributions are welcome!
