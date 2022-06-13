@@ -11,6 +11,7 @@ from homeassistant.components.sensor import SensorStateClass
 from .const import DOMAIN
 from .const import MAIN_ICON
 from .const import PLUG_ICON
+from .const import SENSOR
 from .const import SENSORS
 from .const import W_to_U
 from .entity import DiusEntity
@@ -42,7 +43,7 @@ class DiusSensor(DiusEntity, SensorEntity):
         self.entity_description = description
         self._extra_attr = {}
         self._attr_name = ".".join([DOMAIN, self.entity_description.name])
-        self.entity_id = DOMAIN + "." + self.entity_description.key
+        self.entity_id = SENSOR + "." + "_".join([DOMAIN, self.entity_description.key])
         self._attr_device_class = SensorDeviceClass.POWER
         self._attr_state_class = SensorStateClass.MEASUREMENT
         self._power: float | None = None
