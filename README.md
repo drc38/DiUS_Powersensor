@@ -18,6 +18,7 @@ This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au)
 1. Make the connection more robust (reconnect/close etc)
 1. Switch from 30s polling to push
 2. Add extra sensors
+3. Add tests
 
 # Installation
 
