@@ -1,11 +1,7 @@
 # DiUS_Powersensor
 
 [![GitHub Release][releases-shield]][releases]
-[![GitHub Activity][commits-shield]][commits]
 [![License][license-shield]](LICENSE)
-
-[![pre-commit][pre-commit-shield]][pre-commit]
-[![Black][black-shield]][black]
 
 [![hacs][hacsbadge]][hacs]
 [![Project Maintenance][maintenance-shield]][user_profile]
@@ -14,7 +10,35 @@
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
 
-## Installation
+# Powersensor Home Assistant full integration prototype
+
+This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au) integration with Home Assistant. Kudos to @izevaka `https://github.com/izevaka/powersensor-home-assistant` for figuring out the sensor interface.
+
+# TO DO
+
+1. Make the connection more robust (reconnect/close etc)
+1. Switch from 30s polling to push
+
+# Installation
+
+## HACS
+
+HACS is recommended as it provides automated install and will notify you when updates are available.
+
+This assumes you have [HACS](https://github.com/hacs/integration) installed and know how to use it. If you need help with this, go to the HACS project documentation.
+
+Add custom repository in _HACS_
+
+1. Click on HACS in your menu to open the HACS panel, then click on integrations (https://your.domain/hacs/integrations).
+1. Click on the 3 dots in the top right corner.
+1. Select "Custom repositories"
+1. Add the URL to the repository: `https://github.com/drc38/DiUS_Powersensor`
+1. Select the integration category.
+1. Click the "ADD" button.
+
+Once done, you should see the new repository, appearing in a list like this. Click the **Download** button
+
+## Manual Installation
 
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder) there, you need to create it.
@@ -24,27 +48,14 @@
 6. Restart Home Assistant
 7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "DiUS_Powersensor"
 
-Using your HA configuration directory (folder) as a starting point you should now also have this:
+# Configuration
 
-```text
-custom_components/dius/translations/en.json
-custom_components/dius/translations/fr.json
-custom_components/dius/translations/nb.json
-custom_components/dius/translations/sensor.en.json
-custom_components/dius/translations/sensor.fr.json
-custom_components/dius/translations/sensor.nb.json
-custom_components/dius/translations/sensor.nb.json
-custom_components/dius/__init__.py
-custom_components/dius/api.py
-custom_components/dius/binary_sensor.py
-custom_components/dius/config_flow.py
-custom_components/dius/const.py
-custom_components/dius/manifest.json
-custom_components/dius/sensor.py
-custom_components/dius/switch.py
-```
+Configuration of the integration is done within the Integrations Panel in Home Assistant.
 
-## Configuration is done in the UI
+1. Click on Configuration, then Integrations
+1. Click _Add Integration_
+1. Search for DiUS Powersensor
+1. Find your plug/gateway's IP address in the Powersensor mobile app
 
 <!---->
 
@@ -61,12 +72,6 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 ---
 
 [integration_blueprint]: https://github.com/custom-components/integration_blueprint
-[black]: https://github.com/psf/black
-[black-shield]: https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge
-[buymecoffee]: https://www.buymeacoffee.com/drc38
-[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[commits-shield]: https://img.shields.io/github/commit-activity/y/drc38/DiUS_Powersensor.svg?style=for-the-badge
-[commits]: https://github.com/drc38/DiUS_Powersensor/commits/main
 [hacs]: https://hacs.xyz
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
 [discord]: https://discord.gg/Qa5fW2R
@@ -76,8 +81,6 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/drc38/DiUS_Powersensor.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-%40drc38-blue.svg?style=for-the-badge
-[pre-commit]: https://github.com/pre-commit/pre-commit
-[pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/drc38/DiUS_Powersensor.svg?style=for-the-badge
 [releases]: https://github.com/drc38/DiUS_Powersensor/releases
 [user_profile]: https://github.com/drc38

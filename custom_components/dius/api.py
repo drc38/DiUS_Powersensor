@@ -21,9 +21,13 @@ class DiusApiClient:
         self._open = False
         self._data = {}
 
-    async def start(self):
+    @staticmethod
+    async def start(host: str, port: int):
         """Start socket and listen."""
-        await self.run([self.open_socket(), self.listen()])
+        self = DiusApiClient(host, port)
+        asyncio.create_task(self.run([self.open_socket(), self.listen()]))
+
+        return self
 
     async def listen(self):
         """Listen for incoming messages."""
@@ -85,14 +89,4 @@ class DiusApiClient:
     async def run(self, tasks):
         """Run a specified list of tasks."""
         self.tasks = [asyncio.ensure_future(task) for task in tasks]
-        try:
-            await asyncio.gather(*self.tasks)
-        except asyncio.TimeoutError:
-            pass
-        except Exception as other_exception:
-            _LOGGER.error(
-                f"Unexpected exception in connection: '{other_exception}'",
-                exc_info=True,
-            )
-        finally:
-            pass
+        return await asyncio.gather(*self.tasks)

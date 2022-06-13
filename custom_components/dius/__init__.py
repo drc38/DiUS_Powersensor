@@ -41,8 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     host = entry.data.get(CONF_HOST)
     port = entry.data.get(CONF_PORT)
 
-    client = DiusApiClient(host, port)
-    hass.async_create_task(client.start())
+    client = await DiusApiClient.start(host, port)
 
     coordinator = DiusDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
@@ -53,11 +52,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
     for platform in PLATFORMS:
-        if entry.options.get(platform, True):
-            coordinator.platforms.append(platform)
-            hass.async_add_job(
-                hass.config_entries.async_forward_entry_setup(entry, platform)
-            )
+        coordinator.platforms.append(platform)
+        hass.async_add_job(
+            hass.config_entries.async_forward_entry_setup(entry, platform)
+        )
 
     entry.add_update_listener(async_reload_entry)
 

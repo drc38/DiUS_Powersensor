@@ -29,7 +29,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
     for sens in SENSORS:
         if entry.options.get(sens) is True:
             desc = DiusSensorDescription(key=sens, name=sens)
-            async_add_devices([DiusSensor(coordinator, entry, desc)], True)
+            async_add_devices([DiusSensor(coordinator, entry, desc)], False)
 
 
 class DiusSensor(DiusEntity, SensorEntity):
