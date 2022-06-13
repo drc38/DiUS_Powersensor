@@ -11,7 +11,7 @@
 
 # Powersensor Home Assistant full integration prototype
 
-This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au) integration with Home Assistant. Kudos to (@izevaka)(https://github.com/izevaka/powersensor-home-assistant) for figuring out the sensor interface.
+This is an attempt at a standalone [Powersensor](https://www.powersensor.com.au) integration with Home Assistant. Kudos to [@izevaka](https://github.com/izevaka/powersensor-home-assistant) for figuring out the sensor interface.
 
 # TO DO
 
