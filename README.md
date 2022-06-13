@@ -60,8 +60,8 @@ Configuration of the integration is done within the Integrations Panel in Home A
 
 ![image](https://user-images.githubusercontent.com/20024196/173300192-4092430e-3421-4a5c-a422-3ba066e58856.png)
 
-1. Enter the IP address in the configuration, NB set your router to prevent the IP changing
-2. By default the Main Power sensor and Plug sensor are configured, they can be unselected by clicking _Configure_
+1. Enter the IP address in the configuration, NB set your router to prevent the IP changing. Click _Submit_
+2. Click _Configure_ on the newly created integration. By default the Main Power sensor and Plug sensor are selected, they can be unselected by clicking _Configure_. NB If you don't click _Submit_ the sensors will not be created!
 <!---->
 
 ## Contributions are welcome!
