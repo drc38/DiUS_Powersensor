@@ -83,7 +83,6 @@ class DiusDataUpdateCoordinator(DataUpdateCoordinator):
 
             data = await self.api.async_get_data()
             if data == self.last_data:
-                await self.api.stop()
                 await self.api.reconnect()
             self.last_data = data
             return data

@@ -81,7 +81,13 @@ class DiusSensor(DiusEntity, SensorEntity):
     @property
     def extra_state_attributes(self):
         """Return the state attributes."""
-        return self.coordinator.data.get(self.entity_description.key)
+        if self.coordinator.data.get(self.entity_description.key) is None:
+            data = None
+        else:
+            data = self.coordinator.data.get(self.entity_description.key) | {
+                "HA_reconnects": self.coordinator.data.get("reconnects")
+            }
+        return data
 
     @property
     def should_poll(self):
