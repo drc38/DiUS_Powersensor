@@ -73,13 +73,20 @@ class DiusDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize."""
         self.api = client
         self.platforms = []
+        self.last_data = {}
 
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
 
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            return await self.api.async_get_data()
+
+            data = await self.api.async_get_data()
+            if data == self.last_data:
+                await self.api.stop()
+                await self.api.reconnect()
+            self.last_data = data
+            return data
         except Exception as exception:
             raise UpdateFailed() from exception
 

@@ -20,6 +20,7 @@ class DiusApiClient:
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._open = False
         self._data = {}
+        self._reconnects = 0
 
     @staticmethod
     async def start(host: str, port: int):
@@ -84,9 +85,22 @@ class DiusApiClient:
 
     async def async_get_data(self) -> dict:
         """Get data from the API."""
+        (self._data[Msg_values.sensor.value]).update({"reconnects": self._reconnects})
         return self._data
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
         self.tasks = [asyncio.ensure_future(task) for task in tasks]
         return await asyncio.gather(*self.tasks)
+
+    async def stop(self):
+        """Close connection and cancel ongoing tasks."""
+        self.close_socket()
+        for task in self.tasks:
+            task.cancel()
+
+    async def reconnect(self):
+        """Reconnect to socket and listen."""
+        if self._open is False:
+            asyncio.create_task(self.run([self.open_socket(), self.listen()]))
+            self._reconnects += 1

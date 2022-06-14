@@ -11,7 +11,7 @@
       }
     },
     "error": {
-      "auth": "Username/Password is wrong."
+      "auth": "Error setting up integration."
     },
     "abort": {
       "single_instance_allowed": "Only a single instance is allowed."
