@@ -24,10 +24,21 @@ def skip_notifications_fixture():
 # This fixture, when used, will result in skipping calls to api.start and return api client instance.
 @pytest.fixture(name="skip_api_start", autouse=True)
 def skip_api_start():
-    """Skip notification calls."""
+    """Skip start calls."""
     with patch(
         "custom_components.dius.DiusApiClient.start",
         return_value=DiusApiClient("127.0.0.1", 1234),
+    ):
+        yield
+
+
+# This fixture, when used, will result in skipping calls to api.start and return api client instance.
+@pytest.fixture(name="skip_socket", autouse=True)
+def skip_socket():
+    """Skip socket calls."""
+    with patch(
+        "socket.socket",
+        return_value=None,
     ):
         yield
 
