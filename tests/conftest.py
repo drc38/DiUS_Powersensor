@@ -2,6 +2,9 @@
 from unittest.mock import patch
 
 import pytest
+from custom_components.dius.api import (
+    DiusApiClient,
+)
 
 pytest_plugins = "pytest_homeassistant_custom_component"
 
@@ -24,16 +27,8 @@ def skip_api_start():
     """Skip start calls."""
     with patch(
         "custom_components.dius.DiusApiClient.start",
-        return_value=None,
-    ):
-        yield
-
-
-# This fixture, when used, will result in skipping socket calls.
-@pytest.fixture(name="skip_socket", autouse=True)
-def skip_socket():
-    """Skip socket calls."""
-    with patch(
+        return_value=DiusApiClient("127.0.0.1", 1234),
+    ), patch(
         "socket.socket",
         return_value=None,
     ):
