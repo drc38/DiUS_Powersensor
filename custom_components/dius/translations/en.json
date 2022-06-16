@@ -21,8 +21,9 @@
     "step": {
       "user": {
         "data": {
+          "sensor": "Sensor enabled",
           "plug": "Plug enabled",
-          "sensor": "Sensor enabled"
+          "U_conv": "U to W conversion"
         }
       }
     }

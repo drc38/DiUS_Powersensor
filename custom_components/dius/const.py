@@ -40,7 +40,8 @@ DEFAULT_PORT = 49476
 DEFAULT_NAME = DOMAIN
 
 # Conversion
-W_to_U = 19.3
+U_CONV = "U_conv"
+DEFAULT_W_to_U = 19.3
 
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
