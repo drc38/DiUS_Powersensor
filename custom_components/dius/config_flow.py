@@ -8,15 +8,18 @@ from .const import CONF_HOST
 from .const import CONF_PORT
 from .const import DEFAULT_HOST
 from .const import DEFAULT_PORT
+from .const import DEFAULT_W_to_U
 from .const import DOMAIN
-from .const import SENSORS
+from .const import MAIN_POWER
+from .const import PLUG
+from .const import U_CONV
 
 
 class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for dius."""
 
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
+    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
     def __init__(self):
         """Initialize."""
@@ -96,8 +99,13 @@ class DiusOptionsFlowHandler(config_entries.OptionsFlow):
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required(x, default=self.options.get(x, True)): bool
-                    for x in sorted(SENSORS)
+                    vol.Required(
+                        MAIN_POWER, default=self.options.get(MAIN_POWER, True)
+                    ): bool,
+                    vol.Required(PLUG, default=self.options.get(PLUG, True)): bool,
+                    vol.Required(
+                        U_CONV, default=self.options.get(U_CONV, DEFAULT_W_to_U)
+                    ): vol.Coerce(float),
                 }
             ),
         )

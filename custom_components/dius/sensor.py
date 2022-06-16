@@ -13,7 +13,6 @@ from .const import MAIN_ICON
 from .const import PLUG_ICON
 from .const import SENSOR
 from .const import SENSORS
-from .const import W_to_U
 from .entity import DiusEntity
 from .enums import Msg_keys
 from .enums import Msg_values
@@ -40,6 +39,7 @@ class DiusSensor(DiusEntity, SensorEntity):
 
     def __init__(self, coordinator, config_entry, description: DiusSensorDescription):
         super().__init__(coordinator, config_entry)
+        self._config = config_entry
         self.entity_description = description
         self._extra_attr = {}
         self._attr_name = ".".join([DOMAIN, self.entity_description.name])
@@ -56,7 +56,7 @@ class DiusSensor(DiusEntity, SensorEntity):
             data = self.coordinator.data.get(self.entity_description.key)
             self._power = data.get(Msg_keys.power.value)
             if data.get(Msg_keys.unit, "") == "U":
-                self._power = self._power / W_to_U
+                self._power = self._power / self._config.options.get("U_conv")
             self._power = round(self._power)
         return self._power
 
