@@ -37,5 +37,5 @@ def error_get_data_fixture():
     with patch(
         "custom_components.dius.DiusApiClient.async_get_data",
         side_effect=Exception,
-    ):
+    ), patch("custom_components.dius.DiusApiClient.start"):
         yield
