@@ -5,7 +5,6 @@ from .enums import Msg_values
 NAME = "DiUS_Powersensor"
 DOMAIN = "dius"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.0.1"
 
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
 ISSUE_URL = "https://github.com/drc38/DiUS_Powersensor/issues"
@@ -46,7 +45,6 @@ DEFAULT_W_to_U = 19.3
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
 {NAME}
-Version: {VERSION}
 This is a custom integration!
 If you have any issues with this you need to open an issue here:
 {ISSUE_URL}

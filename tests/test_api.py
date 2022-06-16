@@ -24,11 +24,11 @@ async def test_api(hass, caplog):
     )
 
     # If a user were to enter form it would result in this function call
-    entry = await hass.config_entries.flow.async_configure(
+    result = await hass.config_entries.flow.async_configure(
         result["flow_id"], user_input=MOCK_CONFIG
     )
 
-    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_init("test")
 
     # Enter some fake data into the form
     result = await hass.config_entries.options.async_configure(
