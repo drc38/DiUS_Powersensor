@@ -1,4 +1,4 @@
-"""Sample API Client."""
+"""Dius API Client."""
 import asyncio
 import json
 import logging
@@ -13,7 +13,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 class DiusApiClient:
     def __init__(self, host: str, port: int) -> None:
-        """Sample API Client."""
+        """Dius API Client."""
         self._host = host
         self._port = port
         self._server_address = (host, port)
