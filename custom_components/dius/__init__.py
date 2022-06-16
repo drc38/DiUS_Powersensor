@@ -38,6 +38,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
 
+    entry.add_to_hass(hass)
+
     host = entry.data.get(CONF_HOST)
     port = entry.data.get(CONF_PORT)
 
