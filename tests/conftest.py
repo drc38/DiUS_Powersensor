@@ -2,6 +2,9 @@
 from unittest.mock import patch
 
 import pytest
+from custom_components.dius.api import (
+    DiusApiClient,
+)
 
 pytest_plugins = "pytest_homeassistant_custom_component"
 
@@ -18,14 +21,23 @@ def skip_notifications_fixture():
         yield
 
 
+# This fixture, when used, will result in skipping calls to api.start and return api client instance.
+@pytest.fixture(name="skip_api_start", autouse=True)
+def skip_api_start():
+    """Skip notification calls."""
+    with patch(
+        "custom_components.dius.DiusApiClient.start",
+        return_value=DiusApiClient("127.0.0.1", 1234),
+    ):
+        yield
+
+
 # This fixture, when used, will result in calls to async_get_data to return None. To have the call
 # return a value, we would add the `return_value=<VALUE_TO_RETURN>` parameter to the patch call.
 @pytest.fixture(name="bypass_get_data")
 def bypass_get_data_fixture():
     """Skip calls to get data from API."""
-    with patch("custom_components.dius.DiusApiClient.async_get_data"), patch(
-        "custom_components.dius.DiusApiClient.start"
-    ):
+    with patch("custom_components.dius.DiusApiClient.async_get_data"):
         yield
 
 
@@ -37,5 +49,5 @@ def error_get_data_fixture():
     with patch(
         "custom_components.dius.DiusApiClient.async_get_data",
         side_effect=Exception,
-    ), patch("custom_components.dius.DiusApiClient.start"):
+    ):
         yield
