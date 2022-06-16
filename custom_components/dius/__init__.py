@@ -51,6 +51,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
+    # setup options flow with defaults
+    await hass.config_entries.options.async_init(entry.entry_id)
+
     for platform in PLATFORMS:
         coordinator.platforms.append(platform)
         hass.async_add_job(
