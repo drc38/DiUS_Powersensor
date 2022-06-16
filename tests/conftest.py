@@ -34,9 +34,6 @@ def skip_api_start(socket_enabled):
     with patch(
         "custom_components.dius.DiusApiClient.start",
         return_value=DiusApiClient("127.0.0.1", 1234),
-    ), patch(
-        "socket.socket",
-        return_value=None,
     ):
         yield
 

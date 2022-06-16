@@ -9,11 +9,23 @@
 # from custom_components.dius.const import (
 #     CONF_PORT,
 # )
-# from .const import MOCK_CONFIG
+from custom_components.dius.const import DOMAIN
+from homeassistant import config_entries
+
+from .const import MOCK_CONFIG
 
 
 async def test_api(hass, caplog):
     """Test API calls."""
+    # Initialize a config flow
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_USER}
+    )
+
+    # If a user were to enter form it would result in this function call
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], user_input=MOCK_CONFIG
+    )
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
