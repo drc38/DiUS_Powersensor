@@ -5,7 +5,6 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import ATTRIBUTION
 from .const import DOMAIN
 from .const import NAME
-from .const import VERSION
 
 
 class DiusEntity(CoordinatorEntity):
@@ -23,7 +22,6 @@ class DiusEntity(CoordinatorEntity):
         return {
             "identifiers": {(DOMAIN, self.unique_id)},
             "name": NAME,
-            "model": VERSION,
             "manufacturer": NAME,
         }
 

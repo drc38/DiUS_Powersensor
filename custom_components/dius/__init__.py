@@ -51,6 +51,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
+    # setup options flow with defaults
+    if not entry.options:
+        entry.options = {"sensor": True, "plug": True, "U_conv": 19.3}
+        # probably a better approach to this...
+
     for platform in PLATFORMS:
         coordinator.platforms.append(platform)
         hass.async_add_job(

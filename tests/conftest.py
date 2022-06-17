@@ -2,8 +2,17 @@
 from unittest.mock import patch
 
 import pytest
+from custom_components.dius.api import (
+    DiusApiClient,
+)
 
 pytest_plugins = "pytest_homeassistant_custom_component"
+
+
+@pytest.fixture(autouse=True)
+def auto_enable_custom_integrations(enable_custom_integrations):
+    """Enable custom integrations defined in the test dir."""
+    yield
 
 
 # This fixture is used to prevent HomeAssistant from attempting to create and dismiss persistent
@@ -14,6 +23,17 @@ def skip_notifications_fixture():
     """Skip notification calls."""
     with patch("homeassistant.components.persistent_notification.async_create"), patch(
         "homeassistant.components.persistent_notification.async_dismiss"
+    ):
+        yield
+
+
+# This fixture, when used, will result in skipping calls to api.start.
+@pytest.fixture(name="skip_api_start", autouse=True)
+def skip_api_start(socket_enabled):
+    """Skip start calls."""
+    with patch(
+        "custom_components.dius.DiusApiClient.start",
+        return_value=DiusApiClient("127.0.0.1", 1234),
     ):
         yield
 

@@ -2,26 +2,14 @@
 from unittest.mock import patch
 
 import pytest
-from custom_components.dius.const import (
-    BINARY_SENSOR,
-)
-from custom_components.dius.const import (
-    DOMAIN,
-)
-from custom_components.dius.const import (
-    PLATFORMS,
-)
-from custom_components.dius.const import (
-    SENSOR,
-)
-from custom_components.dius.const import (
-    SWITCH,
-)
+from custom_components.dius.const import CONF_HOST
+from custom_components.dius.const import DOMAIN
 from homeassistant import config_entries
 from homeassistant import data_entry_flow
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import MOCK_CONFIG
+from .const import MOCK_OPTIONS
 
 
 # This fixture bypasses the actual setup of the integration
@@ -51,8 +39,7 @@ async def test_successful_config_flow(hass, bypass_get_data):
     assert result["type"] == data_entry_flow.RESULT_TYPE_FORM
     assert result["step_id"] == "user"
 
-    # If a user were to enter `test_username` for username and `test_password`
-    # for password, it would result in this function call
+    # If a user were to enter form it would result in this function call
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"], user_input=MOCK_CONFIG
     )
@@ -60,7 +47,7 @@ async def test_successful_config_flow(hass, bypass_get_data):
     # Check that the config flow is complete and a new entry is created with
     # the input data
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
+    assert result["title"] == MOCK_CONFIG[CONF_HOST]
     assert result["data"] == MOCK_CONFIG
     assert result["result"]
 
@@ -106,12 +93,12 @@ async def test_options_flow(hass):
     # Enter some fake data into the form
     result = await hass.config_entries.options.async_configure(
         result["flow_id"],
-        user_input={platform: platform != SENSOR for platform in PLATFORMS},
+        user_input=MOCK_OPTIONS,
     )
 
     # Verify that the flow finishes
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
-    assert result["title"] == "test_username"
+    assert result["title"] == MOCK_CONFIG[CONF_HOST]
 
     # Verify that the options were updated
-    assert entry.options == {BINARY_SENSOR: True, SENSOR: False, SWITCH: True}
+    assert entry.options == MOCK_OPTIONS
