@@ -1,5 +1,16 @@
 """Tests for DiUS_Powersensor api."""
-# import asyncio
+import asyncio
+import socket
+
+from custom_components.dius.api import DiusApiClient
+from custom_components.dius.const import DOMAIN
+from homeassistant import config_entries
+
+from .const import CONF_HOST
+from .const import CONF_PORT
+from .const import MOCK_CONFIG
+
+
 # from custom_components.dius.api import (
 #     DiusApiClient,
 # )
@@ -9,15 +20,11 @@
 # from custom_components.dius.const import (
 #     CONF_PORT,
 # )
-from custom_components.dius.const import DOMAIN
-from homeassistant import config_entries
-
-from .const import MOCK_CONFIG
 
 # from .const import MOCK_OPTIONS
 
 
-async def test_api(hass, caplog):
+async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
     # Initialize a config flow
     result = await hass.config_entries.flow.async_init(
@@ -28,14 +35,12 @@ async def test_api(hass, caplog):
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"], user_input=MOCK_CONFIG
     )
-    # entry = hass.config_entries.async_entries(DOMAIN)[0]
-    # result = await hass.config_entries.options.async_init(entry.entry_id)
 
-    # # Enter some fake data into the form
-    # result = await hass.config_entries.options.async_configure(
-    #     result["flow_id"],
-    #     user_input=MOCK_OPTIONS,
-    # )
+    server = await SocketServer.start(CONF_HOST, CONF_PORT)
+    client = await DiusApiClient.start(CONF_HOST, CONF_PORT)
+
+    await client.close_socket()
+    await server.close_socket()
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
@@ -109,3 +114,75 @@ async def test_api(hass, caplog):
     #     len(caplog.record_tuples) == 1
     #     and "Error parsing information from" in caplog.record_tuples[0][2]
     # )
+
+
+class SocketServer:
+    """Test socket server for api."""
+
+    def __init__(self, host: str, port: int):
+        """Init extra variables for testing."""
+        self.accept: bool = True
+        self._server_address = (host, port)
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._conn = None
+
+    @staticmethod
+    async def start(host: str, port: int):
+        """Start socket and listen."""
+        self = SocketServer(host, port)
+        asyncio.create_task(self.run([self.listen()]))
+
+        return self
+
+    async def listen(self):
+        """Listen for incoming messages."""
+        with self._socket as s:
+            s.bind(self._server_address)
+            s.listen()
+            self._conn, addr = s.accept()
+            with self._conn:
+                while True:
+                    data = self._conn.recv(1024)
+                    if not data:
+                        break
+                    self._conn.sendall(data)
+                    asyncio.sleep(1)
+
+    async def send_message(self):
+        """Send test messages."""
+        sensor_data = {
+            "mac": "2cf4320aaaa",
+            "device": "sensor",
+            "summation": 21931891707,
+            "duration": 30,
+            "type": "instant_power",
+            "batteryMicrovolt": 4143072,
+            "unit": "U",
+            "starttime": 1653477217,
+            "power": 93184,
+        }
+        self._conn.sendall(sensor_data)
+
+    async def run(self, tasks):
+        """Run a specified list of tasks."""
+        self.tasks = [asyncio.ensure_future(task) for task in tasks]
+        try:
+            await asyncio.gather(*self.tasks)
+        except Exception:  # as other_exception:
+            pass
+            # _LOGGER.error(
+            #     f"Unexpected exception in connection to '{self._host}': '{other_exception}'",
+            #     exc_info=True,
+            # )
+        finally:
+            await self.stop()
+
+    async def stop(self):
+        """Close connection and cancel ongoing tasks."""
+        await self.close_socket()
+        for task in self.tasks:
+            task.cancel()
+
+    async def close_socket(self):
+        """Close socket connection."""
+        await self._socket.close()

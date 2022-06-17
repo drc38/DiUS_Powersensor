@@ -28,7 +28,7 @@ def skip_notifications_fixture():
 
 
 # This fixture, when used, will result in skipping calls to api.start.
-@pytest.fixture(name="skip_api_start", autouse=True)
+@pytest.fixture(name="skip_api_start")
 def skip_api_start(socket_enabled):
     """Skip start calls."""
     with patch(
