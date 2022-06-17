@@ -39,8 +39,8 @@ async def test_api(hass, caplog, socket_enabled):
     server = await SocketServer.start(CONF_HOST, CONF_PORT)
     client = await DiusApiClient.start(CONF_HOST, CONF_PORT)
 
-    await client.close_socket()
-    await server.close_socket()
+    await client.stop()
+    await server.stop()
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
