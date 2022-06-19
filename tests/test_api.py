@@ -144,7 +144,7 @@ class SocketServer:
             while True:
                 await asyncio.sleep(1)
                 data, self._conn = s.recvfrom(1024)
-                if data:
+                # if data:
                 # self._conn.sendall(data)
 
     async def send_message(self):
