@@ -2,6 +2,12 @@
 import asyncio
 import socket
 
+from custom_components.dius import (
+    async_setup_entry,
+)
+from custom_components.dius import (
+    async_unload_entry,
+)
 from custom_components.dius.api import DiusApiClient
 from custom_components.dius.const import DOMAIN
 # from homeassistant import config_entries
