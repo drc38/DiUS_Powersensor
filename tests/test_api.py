@@ -10,12 +10,12 @@ from custom_components.dius import (
 )
 from custom_components.dius.api import DiusApiClient
 from custom_components.dius.const import DOMAIN
-# from homeassistant import config_entries
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import CONF_HOST
 from .const import CONF_PORT
 from .const import MOCK_CONFIG
+# from homeassistant import config_entries
 
 
 # from custom_components.dius.api import (
@@ -43,7 +43,7 @@ async def test_api(hass, caplog, socket_enabled):
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
 
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="testapi")
+    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi")
     await async_setup_entry(hass, config_entry)
 
     await SocketServer.start(CONF_HOST, CONF_PORT)
