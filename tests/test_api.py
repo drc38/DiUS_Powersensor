@@ -4,7 +4,8 @@ import socket
 
 from custom_components.dius.api import DiusApiClient
 from custom_components.dius.const import DOMAIN
-from homeassistant import config_entries
+# from homeassistant import config_entries
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import CONF_HOST
 from .const import CONF_PORT
@@ -27,20 +28,25 @@ from .const import MOCK_CONFIG
 async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
     # Initialize a config flow
-    result = await hass.config_entries.flow.async_init(
-        DOMAIN, context={"source": config_entries.SOURCE_USER}
-    )
+    # result = await hass.config_entries.flow.async_init(
+    #    DOMAIN, context={"source": config_entries.SOURCE_USER}
+    # )
 
     # If a user were to enter form it would result in this function call
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=MOCK_CONFIG
-    )
+    # result = await hass.config_entries.flow.async_configure(
+    #    result["flow_id"], user_input=MOCK_CONFIG
+    # )
+
+    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="testapi")
+    await async_setup_entry(hass, config_entry)
 
     await SocketServer.start(CONF_HOST, CONF_PORT)
     await DiusApiClient.start(CONF_HOST, CONF_PORT)
 
     # await client.stop()
     # await server.stop()
+
+    await async_unload_entry(hass, config_entry)
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
@@ -160,7 +166,7 @@ class SocketServer:
             "starttime": 1653477217,
             "power": 93184,
         }
-        self._socket.sendto(sensor_data,self._conn)
+        self._socket.sendto(sensor_data, self._conn)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
