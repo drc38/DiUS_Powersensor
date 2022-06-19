@@ -178,10 +178,11 @@ class SocketServer:
 
     async def stop(self):
         """Close connection and cancel ongoing tasks."""
-        await self.close_socket()
+        self.close_socket()
         for task in self.tasks:
             task.cancel()
 
     async def close_socket(self):
         """Close socket connection."""
-        await self._socket.close()
+        if self._socket:
+            self._socket.close()
