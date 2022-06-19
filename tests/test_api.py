@@ -14,7 +14,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import CONF_HOST
 from .const import CONF_PORT
-from .const import MOCK_CONFIG
+from .const import MOCK_CONFIG_API
 # from homeassistant import config_entries
 
 
