@@ -80,7 +80,8 @@ class DiusApiClient:
 
     async def close_socket(self):
         """Close socket connection."""
-        await self._socket.close()
+        if self._socket:
+            await self._socket.close()
         self._open = False
 
     async def async_get_data(self) -> dict:
