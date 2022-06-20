@@ -9,7 +9,6 @@ from custom_components.dius import (
 from custom_components.dius import (
     async_unload_entry,
 )
-from custom_components.dius.api import DiusApiClient
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
