@@ -150,8 +150,8 @@ class SocketServer:
         """Listen for incoming messages."""
         with self._socket as s:
             s.bind(self._server_address)
-            # s.listen()
-            # self._conn, addr = s.accept()
+            s.listen()
+            self._conn, addr = s.accept()
             # with self._conn:
             while True:
                 await asyncio.sleep(1)
