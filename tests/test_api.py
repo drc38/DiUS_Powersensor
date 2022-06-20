@@ -139,7 +139,7 @@ class SocketServer:
     def __init__(self, host: str, port: int):
         """Init extra variables for testing."""
         self.accept: bool = True
-        self._server_address = (host, port)
+        self._address = (host, port)
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._conn = None
 
@@ -154,7 +154,7 @@ class SocketServer:
     async def listen(self):
         """Listen for incoming messages."""
         with self._socket as s:
-            s.bind(self._server_address)
+            s.bind(self._address)
             s.listen()
             self._conn, addr = s.accept()
             # with self._conn:
@@ -178,7 +178,7 @@ class SocketServer:
             "power": 93184,
         }
         data = json.dumps(data).encode('utf-8')
-        self._socket.sendto(data, self._conn)
+        self._socket.sendto(data, self._address)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
