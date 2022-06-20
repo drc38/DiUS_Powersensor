@@ -176,7 +176,7 @@ class SocketServer:
             "starttime": 1653477217,
             "power": 93184,
         }
-        self._socket.sendto(sensor_data, self._conn)
+        self._socket.sendto(sensor_data.encode(), self._conn)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
