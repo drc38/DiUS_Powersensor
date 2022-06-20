@@ -33,7 +33,7 @@ class DiusApiClient:
     async def listen(self):
         """Listen for incoming messages."""
         while self._open:
-            message = self._socket.recv(1024)
+            message, address = self._socket.recvfrom(1024)
             # _LOGGER.debug("Received message %s", message)
             await self.process_message(message)
             await asyncio.sleep(1)
