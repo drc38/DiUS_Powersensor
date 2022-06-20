@@ -48,7 +48,7 @@ async def test_api(hass, caplog, socket_enabled):
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi")
     await async_setup_entry(hass, config_entry)
 
-    await DiusApiClient.start(CONF_HOST, CONF_PORT)
+    # await DiusApiClient.start(CONF_HOST, CONF_PORT)
 
     # await client.stop()
     # await server.stop()
