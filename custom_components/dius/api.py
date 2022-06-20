@@ -106,8 +106,9 @@ class DiusApiClient:
     async def stop(self):
         """Close connection and cancel ongoing tasks."""
         await self.close_socket()
-        for task in self.tasks:
-            task.cancel()
+        if self.tasks:
+            for task in self.tasks:
+                task.cancel()
 
     async def reconnect(self):
         """Reconnect to socket and listen."""
