@@ -49,7 +49,7 @@ async def test_api(hass, caplog, socket_enabled):
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
-    client = hass.data[DOMAIN][config_entry.entry_id].client
+    client = hass.data[DOMAIN][config_entry.entry_id].api
 
     await server.send_message()
 
