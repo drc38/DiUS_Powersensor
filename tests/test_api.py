@@ -1,5 +1,6 @@
 """Tests for DiUS_Powersensor api."""
 import asyncio
+import json
 import socket
 
 from custom_components.dius import (
@@ -165,7 +166,7 @@ class SocketServer:
 
     async def send_message(self):
         """Send test messages."""
-        sensor_data = {
+        data = {
             "mac": "2cf4320aaaa",
             "device": "sensor",
             "summation": 21931891707,
@@ -176,7 +177,8 @@ class SocketServer:
             "starttime": 1653477217,
             "power": 93184,
         }
-        self._socket.sendto(sensor_data.encode(), self._conn)
+        data = json.dumps(data).encode('utf-8')
+        self._socket.sendto(data, self._conn)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
