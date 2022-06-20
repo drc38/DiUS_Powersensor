@@ -52,8 +52,10 @@ def bypass_get_data_fixture():
 @pytest.fixture(name="error_on_get_data")
 def error_get_data_fixture():
     """Simulate error when retrieving data from API."""
-    with patch("custom_components.dius.DiusApiClient.async_get_data",
-        side_effect=Exception), patch("custom_components.dius.config_flow.DiusFlowHandler._test_credentials",
+    with patch(
+        "custom_components.dius.DiusApiClient.async_get_data", side_effect=Exception
+        ), patch(
+        "custom_components.dius.config_flow.DiusFlowHandler._test_credentials",
         return_value=False,
     ):
         yield
