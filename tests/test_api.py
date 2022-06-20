@@ -51,9 +51,9 @@ async def test_api(hass, caplog, socket_enabled):
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
     await server.send_message()
-
+    await.asyncio.sleep(3)
     await client.stop()
-    await server.stop()
+    # await server.stop()
 
     await async_unload_entry(hass, config_entry)
 
@@ -176,7 +176,7 @@ class SocketServer:
             "starttime": 1653477217,
             "power": 93184,
         }
-        data = json.dumps(data).encode('utf-8')
+        data = json.dumps(data).encode("utf-8")
         self._socket.sendto(data, self._address)
 
     async def run(self, tasks):
