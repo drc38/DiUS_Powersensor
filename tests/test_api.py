@@ -49,11 +49,11 @@ async def test_api(hass, caplog, socket_enabled):
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
+    client = hass.data[DOMAIN][config_entry.entry_id].client
 
-    await serv.send_message()
-    # await DiusApiClient.start(CONF_HOST, CONF_PORT)
+    await server.send_message()
 
-    # await client.stop()
+    await client.stop()
     await server.stop()
 
     await async_unload_entry(hass, config_entry)
