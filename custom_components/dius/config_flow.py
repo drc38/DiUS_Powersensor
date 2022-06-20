@@ -3,7 +3,6 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 
-from .api import DiusApiClient
 from .const import CONF_HOST
 from .const import CONF_PORT
 from .const import DEFAULT_HOST
