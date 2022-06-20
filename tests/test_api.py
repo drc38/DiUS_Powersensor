@@ -51,7 +51,7 @@ async def test_api(hass, caplog, socket_enabled):
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
     await server.send_message()
-    await.asyncio.sleep(3)
+    await asyncio.sleep(3)
     await client.stop()
     # await server.stop()
 
