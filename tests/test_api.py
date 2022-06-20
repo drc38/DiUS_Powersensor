@@ -140,6 +140,7 @@ class SocketServer:
         self._address = (host, port)
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._conn = None
+        self.tasks = None
 
     @staticmethod
     async def start(host: str, port: int):
@@ -195,8 +196,9 @@ class SocketServer:
     async def stop(self):
         """Close connection and cancel ongoing tasks."""
         await self.close_socket()
-        for task in self.tasks:
-            task.cancel()
+        if self.tasks:
+            for task in self.tasks:
+                task.cancel()
 
     async def close_socket(self):
         """Close socket connection."""
