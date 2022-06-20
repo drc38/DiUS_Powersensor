@@ -21,6 +21,7 @@ class DiusApiClient:
         self._open = False
         self._data = {}
         self._reconnects = 0
+        self.tasks = None
 
     @staticmethod
     async def start(host: str, port: int):
