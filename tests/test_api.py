@@ -141,15 +141,15 @@ class SocketServer:
         """Listen for incoming messages."""
         with self._socket as s:
             s.bind(self._address)
-            s.listen()
-            self._conn, addr = s.accept()
-            self._conn.setblocking(False)
-            with self._conn:
-                while True:
-                    await asyncio.sleep(1)
-                    data = self._conn.recv(1024)
-                    if data:
-                        self.send_message()
+            # s.listen()
+            # self._conn, addr = s.accept()
+            # self._conn.setblocking(False)
+            # with self._conn:
+            while True:
+                await asyncio.sleep(1)
+                data = s.recvfrom(1024, self._address)
+                if data:
+                    self.send_message()
 
     async def send_message(self):
         """Send test messages."""
@@ -165,8 +165,8 @@ class SocketServer:
             "power": 93184,
         }
         data = json.dumps(data).encode("utf-8")
-        if self._conn:
-            self._conn.sendall(data)
+        if self._socket:
+            self._socket.sendto(data, self._address)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
