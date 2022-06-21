@@ -21,6 +21,7 @@ class DiusApiClient:
         self._open = False
         self._data = {}
         self._reconnects = 0
+        self.tasks = None
 
     @staticmethod
     async def start(host: str, port: int):
@@ -33,7 +34,7 @@ class DiusApiClient:
     async def listen(self):
         """Listen for incoming messages."""
         while self._open:
-            message = self._socket.recv(1024)
+            message, address = self._socket.recvfrom(1024)
             # _LOGGER.debug("Received message %s", message)
             await self.process_message(message)
             await asyncio.sleep(1)
@@ -80,7 +81,8 @@ class DiusApiClient:
 
     async def close_socket(self):
         """Close socket connection."""
-        await self._socket.close()
+        if self._socket:
+            self._socket.close()
         self._open = False
 
     async def async_get_data(self) -> dict:
@@ -104,8 +106,9 @@ class DiusApiClient:
     async def stop(self):
         """Close connection and cancel ongoing tasks."""
         await self.close_socket()
-        for task in self.tasks:
-            task.cancel()
+        if self.tasks:
+            for task in self.tasks:
+                task.cancel()
 
     async def reconnect(self):
         """Reconnect to socket and listen."""

@@ -28,7 +28,7 @@ def skip_notifications_fixture():
 
 
 # This fixture, when used, will result in skipping calls to api.start.
-@pytest.fixture(name="skip_api_start", autouse=True)
+@pytest.fixture(name="skip_api_start")
 def skip_api_start(socket_enabled):
     """Skip start calls."""
     with patch(
@@ -53,7 +53,9 @@ def bypass_get_data_fixture():
 def error_get_data_fixture():
     """Simulate error when retrieving data from API."""
     with patch(
-        "custom_components.dius.DiusApiClient.async_get_data",
-        side_effect=Exception,
+        "custom_components.dius.DiusApiClient.async_get_data", side_effect=Exception
+    ), patch(
+        "custom_components.dius.config_flow.DiusFlowHandler._test_credentials",
+        return_value=False,
     ):
         yield

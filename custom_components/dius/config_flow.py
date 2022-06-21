@@ -3,7 +3,6 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 
-from .api import DiusApiClient
 from .const import CONF_HOST
 from .const import CONF_PORT
 from .const import DEFAULT_HOST
@@ -69,8 +68,8 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def _test_credentials(self, host, port):
         """Return true if credentials is valid."""
         try:
-            client = DiusApiClient(host, port)
-            await client.async_get_data()
+            # client = DiusApiClient(host, port)
+            # await client.async_get_data()
             return True
         except Exception:  # pylint: disable=broad-except
             pass
