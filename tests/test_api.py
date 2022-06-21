@@ -28,7 +28,7 @@ async def test_api(hass, caplog, socket_enabled):
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
 
-    server = await SocketServer.start("127.0.0.1", 49476)
+    await SocketServer.start("127.0.0.1", 49476)
 
     config_entry = MockConfigEntry(
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
@@ -36,7 +36,7 @@ async def test_api(hass, caplog, socket_enabled):
     await async_setup_entry(hass, config_entry)
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
-    await server.send_message()
+    # await server.send_message()
     await asyncio.sleep(3)
     await client.stop()
     # await server.stop()
@@ -163,7 +163,8 @@ class SocketServer:
             "power": 93184,
         }
         data = json.dumps(data).encode("utf-8")
-        self._conn.sendall(data)
+        if self._conn:
+            self._conn.sendall(data)
 
     async def run(self, tasks):
         """Run a specified list of tasks."""
