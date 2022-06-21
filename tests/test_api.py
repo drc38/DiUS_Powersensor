@@ -142,6 +142,7 @@ class SocketServer:
             s.bind(self._address)
             s.listen()
             self._conn, addr = s.accept()
+            self._conn.setblocking(False)
             with self._conn:
                 while True:
                     await asyncio.sleep(1)
