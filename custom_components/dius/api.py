@@ -27,7 +27,7 @@ class DiusApiClient:
     async def start(host: str, port: int):
         """Start socket and listen."""
         self = DiusApiClient(host, port)
-        asyncio.create_task(self.run([self.open_socket(), self.listen()]))
+        await self.run([self.open_socket(), self.listen()])
 
         return self
 

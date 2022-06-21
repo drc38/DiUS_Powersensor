@@ -133,7 +133,7 @@ class SocketServer:
     async def start(host: str, port: int):
         """Start socket and listen."""
         self = SocketServer(host, port)
-        asyncio.create_task(self.run([self.listen()]))
+        await self.run([self.listen()])
 
         return self
 
