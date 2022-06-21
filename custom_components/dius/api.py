@@ -96,15 +96,15 @@ class DiusApiClient:
     async def run(self, tasks):
         """Run a specified list of tasks."""
         self.tasks = [asyncio.ensure_future(task) for task in tasks]
-        try:
-            await asyncio.gather(*self.tasks)
-        except Exception as other_exception:
-            _LOGGER.error(
-                f"Unexpected exception in connection to '{self._host}': '{other_exception}'",
-                exc_info=True,
-            )
-        finally:
-            await self.stop()
+        # try:
+        #     await asyncio.gather(*self.tasks)
+        # except Exception as other_exception:
+        #     _LOGGER.error(
+        #         f"Unexpected exception in connection to '{self._host}': '{other_exception}'",
+        #         exc_info=True,
+        #     )
+        # finally:
+        #     await self.stop()
 
     async def stop(self):
         """Close connection and cancel ongoing tasks."""
