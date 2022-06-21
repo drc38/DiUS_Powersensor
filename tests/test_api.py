@@ -147,7 +147,7 @@ class SocketServer:
                     await asyncio.sleep(1)
                     data = self._conn.recv(1024)
                     if data:
-                        self._conn.sendall(data)
+                        self.send_message()
 
     async def send_message(self):
         """Send test messages."""
