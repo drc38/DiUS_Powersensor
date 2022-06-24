@@ -2,34 +2,18 @@
 import asyncio
 import json
 import socket
+from datetime import timedelta
+from unittest.mock import patch
 
-from custom_components.dius import (
-    async_setup_entry,
-)
-from custom_components.dius import (
-    async_unload_entry,
-)
+from custom_components.dius import async_setup_entry
+from custom_components.dius import async_unload_entry
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import MOCK_CONFIG_API
 
-# from homeassistant import config_entries
 
-
-# from custom_components.dius.api import (
-#     DiusApiClient,
-# )
-# from custom_components.dius.const import (
-#     CONF_HOST,
-# )
-# from custom_components.dius.const import (
-#     CONF_PORT,
-# )
-
-# from .const import MOCK_OPTIONS
-
-
+@patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
 async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
     # Initialize a config flow
@@ -48,12 +32,12 @@ async def test_api(hass, caplog, socket_enabled):
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
+    await hass.async_block_till_done()
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
     await server.send_message()
     await asyncio.sleep(3)
     await client.stop()
-    # await server.stop()
 
     await async_unload_entry(hass, config_entry)
 
@@ -146,22 +130,15 @@ class SocketServer:
     async def start(host: str, port: int):
         """Start socket and listen."""
         self = SocketServer(host, port)
-        asyncio.create_task(self.run([self.listen()]))
+        self._socket.bind(self._address)
+        # asyncio.create_task(self.run([self.listen()]))
 
         return self
 
-    async def listen(self):
+    async def receive(self):
         """Listen for incoming messages."""
-        with self._socket as s:
-            s.bind(self._address)
-            s.listen()
-            self._conn, addr = s.accept()
-            # with self._conn:
-            while True:
-                await asyncio.sleep(1)
-                data, self._conn = s.recvfrom(1024)
-                # if data:
-                # self._conn.sendall(data)
+        data, self._conn = self._socket.recvfrom(1024)
+        return data
 
     async def send_message(self):
         """Send test messages."""
@@ -178,27 +155,6 @@ class SocketServer:
         }
         data = json.dumps(data).encode("utf-8")
         self._socket.sendto(data, self._address)
-
-    async def run(self, tasks):
-        """Run a specified list of tasks."""
-        self.tasks = [asyncio.ensure_future(task) for task in tasks]
-        try:
-            await asyncio.gather(*self.tasks)
-        except Exception:  # as other_exception:
-            pass
-            # _LOGGER.error(
-            #     f"Unexpected exception in connection to '{self._host}': '{other_exception}'",
-            #     exc_info=True,
-            # )
-        finally:
-            await self.stop()
-
-    async def stop(self):
-        """Close connection and cancel ongoing tasks."""
-        await self.close_socket()
-        if self.tasks:
-            for task in self.tasks:
-                task.cancel()
 
     async def close_socket(self):
         """Close socket connection."""
