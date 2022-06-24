@@ -27,11 +27,13 @@ async def test_api(hass, caplog, socket_enabled):
     # )
 
     server = await SocketServer.start("127.0.0.1", 49476)
+    await server.send_message()
 
     config_entry = MockConfigEntry(
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
+    await server.send_message()
     await hass.async_block_till_done()
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
