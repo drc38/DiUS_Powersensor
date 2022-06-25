@@ -32,7 +32,7 @@ async def test_api(hass, caplog, socket_enabled, skip_socket_recv_sensor):
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
-    await hass.async_block_till_done()
+    # await hass.async_block_till_done()
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
     await asyncio.sleep(3)
