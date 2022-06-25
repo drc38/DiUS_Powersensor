@@ -26,7 +26,7 @@ async def test_api(hass, caplog, socket_enabled, skip_socket_recv_sensor):
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
 
-    await SocketServer.start("0.0.0.0", 49476)
+    # await SocketServer.start("0.0.0.0", 49476)
 
     config_entry = MockConfigEntry(
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
