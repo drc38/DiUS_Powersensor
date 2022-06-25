@@ -14,7 +14,7 @@ from .const import MOCK_CONFIG_API
 
 
 @patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
-async def test_api(hass, caplog, socket_enabled):
+async def test_api(hass, caplog, socket_enabled, skip_socket_recv_sensor):
     """Test API calls."""
     # Initialize a config flow
     # result = await hass.config_entries.flow.async_init(
@@ -26,18 +26,15 @@ async def test_api(hass, caplog, socket_enabled):
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
 
-    server = await SocketServer.start("0.0.0.0", 49476)
-    await server.send_message()
+    await SocketServer.start("0.0.0.0", 49476)
 
     config_entry = MockConfigEntry(
         domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
     )
     await async_setup_entry(hass, config_entry)
-    await server.send_message()
     await hass.async_block_till_done()
     client = hass.data[DOMAIN][config_entry.entry_id].api
 
-    await server.send_message()
     await asyncio.sleep(3)
     await client.stop()
 
