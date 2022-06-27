@@ -2,60 +2,80 @@
 import asyncio
 import json
 import socket
+from datetime import timedelta
+from unittest import mock
+from unittest.mock import patch
 
-from custom_components.dius import (
-    async_setup_entry,
-)
-from custom_components.dius import (
-    async_unload_entry,
-)
+from custom_components.dius import async_setup_entry
+from custom_components.dius import async_unload_entry
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .const import MOCK_CONFIG_API
 
-# from homeassistant import config_entries
 
-
-# from custom_components.dius.api import (
-#     DiusApiClient,
-# )
-# from custom_components.dius.const import (
-#     CONF_HOST,
-# )
-# from custom_components.dius.const import (
-#     CONF_PORT,
-# )
-
-# from .const import MOCK_OPTIONS
-
-
+@patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
 async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
-    # Initialize a config flow
-    # result = await hass.config_entries.flow.async_init(
-    #    DOMAIN, context={"source": config_entries.SOURCE_USER}
-    # )
+    # data examples from api
+    sens = {
+        "mac": "2cf4320aaaa",
+        "device": "sensor",
+        "summation": 21931891707,
+        "duration": 30,
+        "type": "instant_power",
+        "batteryMicrovolt": 4143072,
+        "unit": "U",
+        "starttime": 1653477217,
+        "power": 93184,
+    }
+    sens = json.dumps(sens).encode("utf-8")
 
-    # If a user were to enter form it would result in this function call
-    # result = await hass.config_entries.flow.async_configure(
-    #    result["flow_id"], user_input=MOCK_CONFIG
-    # )
+    plug = {
+        "mac": "2cf4320aaaa",
+        "device": "plug",
+        "count": 13,
+        "summation": 4978875.205555925146,
+        "duration": 1.038114999999999899,
+        "starttime": 1653477261.118927956,
+        "voltage": 225.8915235514703284,
+        "power": 39.0,
+        "reactive_current": -0.2865971750339266211,
+        "type": "instant_power",
+        "current": 0.3106532513741993018,
+        "unit": "W",
+        "source": "BLE",
+        "active_current": 0.007187742944928241125,
+    }
+    plug = json.dumps(plug).encode("utf-8")
 
-    server = await SocketServer.start("127.0.0.1", 49476)
+    s_warn = {
+        "type": "subscription",
+        "subtype": "warning",
+    }
+    s_warn = json.dumps(s_warn).encode("utf-8")
 
-    config_entry = MockConfigEntry(
-        domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
-    )
-    await async_setup_entry(hass, config_entry)
-    client = hass.data[DOMAIN][config_entry.entry_id].api
+    s_exp = {
+        "type": "subscription",
+        "subtype": "warning",
+    }
+    s_exp = json.dumps(s_exp).encode("utf-8")
 
-    await server.send_message()
-    await asyncio.sleep(3)
-    await client.stop()
-    # await server.stop()
+    scenarios = [sens, plug, s_warn, s_exp]
 
-    await async_unload_entry(hass, config_entry)
+    with mock.patch("socket.socket") as mock_socket:
+        for data in scenarios:
+            mock_socket.return_value.recv.return_value = data
+
+            config_entry = MockConfigEntry(
+                domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
+            )
+            await async_setup_entry(hass, config_entry)
+            # await hass.async_block_till_done()
+            # client = hass.data[DOMAIN][config_entry.entry_id].api
+
+            await asyncio.sleep(1)
+            await async_unload_entry(hass, config_entry)
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
@@ -146,22 +166,15 @@ class SocketServer:
     async def start(host: str, port: int):
         """Start socket and listen."""
         self = SocketServer(host, port)
-        asyncio.create_task(self.run([self.listen()]))
+        self._socket.bind(self._address)
+        # asyncio.create_task(self.run([self.listen()]))
 
         return self
 
-    async def listen(self):
+    async def receive(self):
         """Listen for incoming messages."""
-        with self._socket as s:
-            s.bind(self._address)
-            s.listen()
-            self._conn, addr = s.accept()
-            # with self._conn:
-            while True:
-                await asyncio.sleep(1)
-                data, self._conn = s.recvfrom(1024)
-                # if data:
-                # self._conn.sendall(data)
+        data, self._conn = self._socket.recvfrom(1024)
+        return data
 
     async def send_message(self):
         """Send test messages."""
@@ -178,27 +191,6 @@ class SocketServer:
         }
         data = json.dumps(data).encode("utf-8")
         self._socket.sendto(data, self._address)
-
-    async def run(self, tasks):
-        """Run a specified list of tasks."""
-        self.tasks = [asyncio.ensure_future(task) for task in tasks]
-        try:
-            await asyncio.gather(*self.tasks)
-        except Exception:  # as other_exception:
-            pass
-            # _LOGGER.error(
-            #     f"Unexpected exception in connection to '{self._host}': '{other_exception}'",
-            #     exc_info=True,
-            # )
-        finally:
-            await self.stop()
-
-    async def stop(self):
-        """Close connection and cancel ongoing tasks."""
-        await self.close_socket()
-        if self.tasks:
-            for task in self.tasks:
-                task.cancel()
 
     async def close_socket(self):
         """Close socket connection."""

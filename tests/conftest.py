@@ -1,4 +1,5 @@
 """Global fixtures for DiUS_Powersensor integration."""
+import json
 from unittest.mock import patch
 
 import pytest
@@ -57,5 +58,29 @@ def error_get_data_fixture():
     ), patch(
         "custom_components.dius.config_flow.DiusFlowHandler._test_credentials",
         return_value=False,
+    ):
+        yield
+
+
+# In this fixture, we are forcing calls to async_get_data to raise an Exception. This is useful
+# for exception handling.
+@pytest.fixture(name="skip_socket_recv_sensor")
+def skip_socket_sensor_fixture():
+    """Simulate sensor data when retrieving data from API."""
+    data = {
+        "mac": "2cf4320aaaa",
+        "device": "sensor",
+        "summation": 21931891707,
+        "duration": 30,
+        "type": "instant_power",
+        "batteryMicrovolt": 4143072,
+        "unit": "U",
+        "starttime": 1653477217,
+        "power": 93184,
+    }
+    data = json.dumps(data).encode("utf-8")
+    with patch(
+        "socket.socket.recv",
+        return_value=data,
     ):
         yield
