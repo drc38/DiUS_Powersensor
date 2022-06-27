@@ -3,7 +3,7 @@ import asyncio
 import json
 import socket
 from datetime import timedelta
-from unittest.mock import mock
+from unittest import mock
 from unittest.mock import patch
 
 from custom_components.dius import async_setup_entry
