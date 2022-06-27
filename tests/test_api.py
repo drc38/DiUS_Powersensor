@@ -26,7 +26,7 @@ async def test_api(hass, caplog, socket_enabled):
     # result = await hass.config_entries.flow.async_configure(
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
-    data = {
+    sens = {
         "mac": "2cf4320aaaa",
         "device": "sensor",
         "summation": 21931891707,
@@ -37,21 +37,57 @@ async def test_api(hass, caplog, socket_enabled):
         "starttime": 1653477217,
         "power": 93184,
     }
-    data = json.dumps(data).encode("utf-8")
+    sens = json.dumps(sens).encode("utf-8")
+
+    plug = {
+        "mac": "2cf4320aaaa",
+        "device": "plug",
+        "count": 13,
+        "summation": 4978875.205555925146,
+        "duration": 1.038114999999999899,
+        "starttime": 1653477261.118927956,
+        "voltage": 225.8915235514703284,
+        "power": 39.0,
+        "reactive_current": -0.2865971750339266211,
+        "type": "instant_power",
+        "current": 0.3106532513741993018,
+        "unit": "W",
+        "source": "BLE",
+        "active_current": 0.007187742944928241125,
+    }
+    plug = json.dumps(plug).encode("utf-8")
+
+    s_warn = {
+        "type": "subscription",
+        "subtype": "warning",
+    }
+    s_warn = json.dumps(s_warn).encode("utf-8")
+
+    s_exp = {
+        "type": "subscription",
+        "subtype": "warning",
+    }
+    s_exp = json.dumps(s_exp).encode("utf-8")
 
     with mock.patch("socket.socket") as mock_socket:
-        mock_socket.return_value.recv.return_value = data
-        # await SocketServer.start("0.0.0.0", 49476)
+        mock_socket.return_value.recv.return_value = sens
 
         config_entry = MockConfigEntry(
             domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
         )
         await async_setup_entry(hass, config_entry)
         # await hass.async_block_till_done()
-        client = hass.data[DOMAIN][config_entry.entry_id].api
+        # client = hass.data[DOMAIN][config_entry.entry_id].api
 
-        await asyncio.sleep(3)
-        await client.stop()
+        await asyncio.sleep(1)
+        mock_socket.return_value.recv.return_value = plug
+        await asyncio.sleep(1)
+        mock_socket.return_value.recv.return_value = s_warn
+        await asyncio.sleep(1)
+        mock_socket.return_value.recv.return_value = s_exp
+        await asyncio.sleep(1)
+
+        # await client.stop()
 
         await async_unload_entry(hass, config_entry)
 
