@@ -17,15 +17,7 @@ from .const import MOCK_CONFIG_API
 @patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
 async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
-    # Initialize a config flow
-    # result = await hass.config_entries.flow.async_init(
-    #    DOMAIN, context={"source": config_entries.SOURCE_USER}
-    # )
-
-    # If a user were to enter form it would result in this function call
-    # result = await hass.config_entries.flow.async_configure(
-    #    result["flow_id"], user_input=MOCK_CONFIG
-    # )
+    # data examples from api
     sens = {
         "mac": "2cf4320aaaa",
         "device": "sensor",
@@ -69,27 +61,21 @@ async def test_api(hass, caplog, socket_enabled):
     }
     s_exp = json.dumps(s_exp).encode("utf-8")
 
+    scenarios = [sens, plug, s_warn, s_exp]
+
     with mock.patch("socket.socket") as mock_socket:
-        mock_socket.return_value.recv.return_value = sens
+        for data in scenarios:
+            mock_socket.return_value.recv.return_value = data
 
-        config_entry = MockConfigEntry(
-            domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
-        )
-        await async_setup_entry(hass, config_entry)
-        # await hass.async_block_till_done()
-        # client = hass.data[DOMAIN][config_entry.entry_id].api
+            config_entry = MockConfigEntry(
+                domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
+            )
+            await async_setup_entry(hass, config_entry)
+            # await hass.async_block_till_done()
+            # client = hass.data[DOMAIN][config_entry.entry_id].api
 
-        await asyncio.sleep(1)
-        mock_socket.return_value.recv.return_value = plug
-        await asyncio.sleep(1)
-        mock_socket.return_value.recv.return_value = s_warn
-        await asyncio.sleep(1)
-        mock_socket.return_value.recv.return_value = s_exp
-        await asyncio.sleep(1)
-
-        # await client.stop()
-
-        await async_unload_entry(hass, config_entry)
+            await asyncio.sleep(1)
+            await async_unload_entry(hass, config_entry)
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
