@@ -15,7 +15,7 @@ from .const import MOCK_CONFIG_API
 
 
 @patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
-async def test_api(hass, caplog, socket_enabled, skip_socket_recv_sensor):
+async def test_api(hass, caplog, socket_enabled):
     """Test API calls."""
     # Initialize a config flow
     # result = await hass.config_entries.flow.async_init(
