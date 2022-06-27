@@ -3,6 +3,7 @@ import asyncio
 import json
 import socket
 from datetime import timedelta
+from unittest.mock import mock
 from unittest.mock import patch
 
 from custom_components.dius import async_setup_entry
@@ -25,20 +26,34 @@ async def test_api(hass, caplog, socket_enabled, skip_socket_recv_sensor):
     # result = await hass.config_entries.flow.async_configure(
     #    result["flow_id"], user_input=MOCK_CONFIG
     # )
+    data = {
+        "mac": "2cf4320aaaa",
+        "device": "sensor",
+        "summation": 21931891707,
+        "duration": 30,
+        "type": "instant_power",
+        "batteryMicrovolt": 4143072,
+        "unit": "U",
+        "starttime": 1653477217,
+        "power": 93184,
+    }
+    data = json.dumps(data).encode("utf-8")
 
-    # await SocketServer.start("0.0.0.0", 49476)
+    with mock.patch("socket.socket") as mock_socket:
+        mock_socket.return_value.recv.return_value = data
+        # await SocketServer.start("0.0.0.0", 49476)
 
-    config_entry = MockConfigEntry(
-        domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
-    )
-    await async_setup_entry(hass, config_entry)
-    # await hass.async_block_till_done()
-    client = hass.data[DOMAIN][config_entry.entry_id].api
+        config_entry = MockConfigEntry(
+            domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
+        )
+        await async_setup_entry(hass, config_entry)
+        # await hass.async_block_till_done()
+        client = hass.data[DOMAIN][config_entry.entry_id].api
 
-    await asyncio.sleep(3)
-    await client.stop()
+        await asyncio.sleep(3)
+        await client.stop()
 
-    await async_unload_entry(hass, config_entry)
+        await async_unload_entry(hass, config_entry)
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
