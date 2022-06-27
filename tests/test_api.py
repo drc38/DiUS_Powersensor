@@ -57,7 +57,7 @@ async def test_api(hass, caplog, socket_enabled):
 
     s_exp = {
         "type": "subscription",
-        "subtype": "warning",
+        "subtype": "expiry",
     }
     s_exp = json.dumps(s_exp).encode("utf-8")
 
