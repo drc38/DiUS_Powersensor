@@ -1,5 +1,5 @@
 # DiUS_Powersensor
-[coverage badge](./coverage.svg)
+![coverage badge](./coverage.svg)
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE)
 
@@ -77,14 +77,14 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 
 [integration_blueprint]: https://github.com/custom-components/integration_blueprint
 [hacs]: https://hacs.xyz
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg
 [discord]: https://discord.gg/Qa5fW2R
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
+[discord-shield]: https://img.shields.io/discord/330944238910963714.svg
 [exampleimg]: example.png
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
+[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg
 [forum]: https://community.home-assistant.io/
-[license-shield]: https://img.shields.io/github/license/drc38/DiUS_Powersensor.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-%40drc38-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/drc38/DiUS_Powersensor.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/drc38/DiUS_Powersensor.svg
+[maintenance-shield]: https://img.shields.io/badge/maintainer-%40drc38-blue.svg
+[releases-shield]: https://img.shields.io/github/release/drc38/DiUS_Powersensor.svg
 [releases]: https://github.com/drc38/DiUS_Powersensor/releases
 [user_profile]: https://github.com/drc38
