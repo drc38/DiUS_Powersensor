@@ -84,3 +84,5 @@ jobs:
             -rA \
             -p no:sugar \
             tests
+      - name: coverage.py badge
+        uses: tj-actions/coverage-badge-py@v1.8
