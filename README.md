@@ -1,5 +1,5 @@
 # DiUS_Powersensor
-
+[coverage badge](./coverage.svg)
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE)
 
