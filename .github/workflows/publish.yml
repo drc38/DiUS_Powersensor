@@ -23,6 +23,7 @@ jobs:
         with:
           python-version: "3.x"
           cache: "pip"
+          cache-dependency-path: "{{ github.workspace }}/requirements.txt"
 
       - name: 🔢 Get version
         id: version
