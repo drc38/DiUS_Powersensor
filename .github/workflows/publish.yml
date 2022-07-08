@@ -36,17 +36,17 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         with:
           name: dius_powersensor
-          path: ${{ github.workspace }}/custom_components/dius_powersensor
+          path: ${{ github.workspace }}/custom_components/dius
 
       # Pack the dir as a zip and upload to the release
       - name: 📦 ZIP Dir
         if: ${{ github.event_name == 'release' }}
         run: |
-          cd ${{ github.workspace }}/custom_components/dius_powersensor
-          zip dius_powersensor.zip -r ./
+          cd ${{ github.workspace }}/custom_components/dius
+          zip dius.zip -r ./
 
       - name: 📤 Upload zip to release
         uses: softprops/action-gh-release@v1
         if: ${{ github.event_name == 'release' }}
         with:
-          files: ${{ github.workspace }}/custom_components/dius_powersensor/dius_powersensor.zip
+          files: ${{ github.workspace }}/custom_components/dius/dius.zip
