@@ -6,7 +6,7 @@
 
 [![hacs][hacsbadge]][hacs]
 [![Project Maintenance][maintenance-shield]][user_profile]
-[![hacs_downloads](https://img.shields.io/github/downloads/drc38/dius_powersensor/latest/total)](https://github.com/drc38/dius_powersensor)
+[![hacs_downloads](https://img.shields.io/github/downloads/drc38/dius_powersensor/latest/total)](https://github.com/drc38/dius_powersensor/releases/latest)
 
 [![Discord][discord-shield]][discord]
 [![Community Forum][forum-shield]][forum]
