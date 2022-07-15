@@ -85,12 +85,7 @@ jobs:
             -rA \
             -p no:sugar \
             tests
-  coverage:
-    runs-on: "ubuntu-latest"
-    name: Create coverage badge
-    needs: tests
-    if: github.ref == 'refs/heads/master'
-    steps:
+
       - name: coverage.py badge
         uses: tj-actions/coverage-badge-py@v1.8
 
