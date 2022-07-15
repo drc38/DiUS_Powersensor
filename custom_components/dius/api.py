@@ -49,7 +49,7 @@ class DiusApiClient:
         _LOGGER.info("The socket stream is connected, subscribing")
         while True:
             await self.subscribe()
-            await asyncio.sleep(150)
+            await asyncio.sleep(100)
 
     async def process_message(self, raw_msg):
         """Process json messages received."""

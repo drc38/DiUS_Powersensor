@@ -67,13 +67,13 @@ class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def _test_credentials(self, host, port):
         """Return true if credentials is valid."""
-        try:
+        # try:
             # client = DiusApiClient(host, port)
             # await client.async_get_data()
-            return True
-        except Exception:  # pylint: disable=broad-except
-            pass
-        return False
+        return True
+        # except Exception:  # pylint: disable=broad-except
+        #     pass
+        # return False
 
 
 class DiusOptionsFlowHandler(config_entries.OptionsFlow):
