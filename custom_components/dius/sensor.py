@@ -7,7 +7,6 @@ from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorEntityDescription
 from homeassistant.components.sensor import SensorStateClass
-from homeassistant.const import POWER_KILO_WATT
 from homeassistant.const import POWER_WATT
 
 from .const import DOMAIN
@@ -38,7 +37,6 @@ async def async_setup_entry(hass, entry, async_add_devices):
                 device_class=SensorDeviceClass.POWER,
                 state_class=SensorStateClass.MEASUREMENT,
                 native_unit_of_measurement=POWER_WATT,
-                unit_of_measurement=POWER_KILO_WATT,
             )
             async_add_devices([DiusSensor(coordinator, entry, desc)], False)
 
@@ -49,7 +47,7 @@ class DiusSensor(DiusEntity, SensorEntity):
     entity_description: DiusSensorDescription
 
     def __init__(self, coordinator, config_entry, description: DiusSensorDescription):
-        super().__init__(coordinator, config_entry)
+        super().__init__(coordinator, config_entry, description)
         self._config = config_entry
         self.entity_description = description
         self._extra_attr = {}
@@ -66,7 +64,8 @@ class DiusSensor(DiusEntity, SensorEntity):
             self._power = data.get(Msg_keys.power.value)
             if data.get(Msg_keys.unit, "") == "U":
                 self._power = self._power / self._config.options.get(U_CONV)
-            self._power += self._config.options.get(W_ADJ)
+            if self.entity_description.key == Msg_values.sensor.value:
+                self._power += self._config.options.get(W_ADJ)
             self._power = round(self._power)
         return self._power
 

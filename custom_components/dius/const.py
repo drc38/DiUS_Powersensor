@@ -6,7 +6,7 @@ NAME = "DiUS_Powersensor"
 DOMAIN = "dius"
 DOMAIN_DATA = f"{DOMAIN}_data"
 
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
+ATTRIBUTION = "https://www.powersensor.com.au/"
 ISSUE_URL = "https://github.com/drc38/DiUS_Powersensor/issues"
 
 # Icons
