@@ -41,6 +41,8 @@ DEFAULT_NAME = DOMAIN
 # Conversion
 U_CONV = "U_conv"
 DEFAULT_W_to_U = 19.3
+W_ADJ = "W_adj"
+DEFAULT_W_ADJ = 0
 
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
