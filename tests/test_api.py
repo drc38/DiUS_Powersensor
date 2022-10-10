@@ -11,7 +11,7 @@ from custom_components.dius import async_unload_entry
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .const import MOCK_CONFIG_API
+from .const import MOCK_CONFIG_API, MOCK_OPTIONS
 
 
 @patch("custom_components.dius.SCAN_INTERVAL", timedelta(seconds=1))
@@ -68,7 +68,10 @@ async def test_api(hass, caplog, socket_enabled):
             mock_socket.return_value.recv.return_value = data
 
             config_entry = MockConfigEntry(
-                domain=DOMAIN, data=MOCK_CONFIG_API, entry_id="testapi"
+                domain=DOMAIN, 
+                data=MOCK_CONFIG_API, 
+                entry_id="testapi",
+                options=MOCK_OPTIONS
             )
             await async_setup_entry(hass, config_entry)
             # await hass.async_block_till_done()
