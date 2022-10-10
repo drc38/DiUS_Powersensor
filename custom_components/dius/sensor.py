@@ -7,12 +7,16 @@ from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorEntityDescription
 from homeassistant.components.sensor import SensorStateClass
+from homeassistant.const import POWER_KILO_WATT
+from homeassistant.const import POWER_WATT
 
 from .const import DOMAIN
 from .const import MAIN_ICON
 from .const import PLUG_ICON
 from .const import SENSOR
 from .const import SENSORS
+from .const import U_CONV
+from .const import W_ADJ
 from .entity import DiusEntity
 from .enums import Msg_keys
 from .enums import Msg_values
@@ -28,7 +32,14 @@ async def async_setup_entry(hass, entry, async_add_devices):
     coordinator = hass.data[DOMAIN][entry.entry_id]
     for sens in SENSORS:
         if entry.options.get(sens) is True:
-            desc = DiusSensorDescription(key=sens, name=sens)
+            desc = DiusSensorDescription(
+                key=sens,
+                name=sens,
+                device_class=SensorDeviceClass.POWER,
+                state_class=SensorStateClass.MEASUREMENT,
+                native_unit_of_measurement=POWER_WATT,
+                unit_of_measurement=POWER_KILO_WATT,
+            )
             async_add_devices([DiusSensor(coordinator, entry, desc)], False)
 
 
@@ -44,8 +55,6 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._extra_attr = {}
         self._attr_name = ".".join([DOMAIN, self.entity_description.name])
         self.entity_id = SENSOR + "." + "_".join([DOMAIN, self.entity_description.key])
-        self._attr_device_class = SensorDeviceClass.POWER
-        self._attr_state_class = SensorStateClass.MEASUREMENT
         self._power: float | None = None
 
     @property
@@ -56,7 +65,8 @@ class DiusSensor(DiusEntity, SensorEntity):
             data = self.coordinator.data.get(self.entity_description.key)
             self._power = data.get(Msg_keys.power.value)
             if data.get(Msg_keys.unit, "") == "U":
-                self._power = self._power / self._config.options.get("U_conv")
+                self._power = self._power / self._config.options.get(U_CONV)
+            self._power += self._config.options.get(W_ADJ)
             self._power = round(self._power)
         return self._power
 
@@ -72,11 +82,6 @@ class DiusSensor(DiusEntity, SensorEntity):
             return PLUG_ICON
         if self.entity_description.key == Msg_values.sensor.value:
             return MAIN_ICON
-
-    @property
-    def native_unit_of_measurement(self):
-        """Return the native unit of measurement."""
-        return "W"
 
     @property
     def extra_state_attributes(self):

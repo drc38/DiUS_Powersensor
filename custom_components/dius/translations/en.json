@@ -23,7 +23,8 @@
         "data": {
           "sensor": "Sensor enabled",
           "plug": "Plug enabled",
-          "U_conv": "U to W conversion"
+          "U_conv": "U to W conversion",
+          "W_adj": "Offset W reported"
         }
       }
     }

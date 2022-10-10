@@ -7,11 +7,13 @@ from .const import CONF_HOST
 from .const import CONF_PORT
 from .const import DEFAULT_HOST
 from .const import DEFAULT_PORT
+from .const import DEFAULT_W_ADJ
 from .const import DEFAULT_W_to_U
 from .const import DOMAIN
 from .const import MAIN_POWER
 from .const import PLUG
 from .const import U_CONV
+from .const import W_ADJ
 
 
 class DiusFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
@@ -104,6 +106,9 @@ class DiusOptionsFlowHandler(config_entries.OptionsFlow):
                     vol.Required(PLUG, default=self.options.get(PLUG, True)): bool,
                     vol.Required(
                         U_CONV, default=self.options.get(U_CONV, DEFAULT_W_to_U)
+                    ): vol.Coerce(float),
+                    vol.Required(
+                        W_ADJ, default=self.options.get(W_ADJ, DEFAULT_W_ADJ)
                     ): vol.Coerce(float),
                 }
             ),
