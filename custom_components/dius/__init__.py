@@ -43,7 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     client = await DiusApiClient.start(host, port)
     # wait for data to be received
-    await asyncio.sleep(5)
+    await asyncio.sleep(2)
 
     coordinator = DiusDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
