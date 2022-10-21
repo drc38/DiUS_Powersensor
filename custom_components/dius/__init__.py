@@ -42,6 +42,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     port = entry.data.get(CONF_PORT)
 
     client = await DiusApiClient.start(host, port)
+    # wait for data to be received
+    await asyncio.sleep(5)
 
     coordinator = DiusDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
@@ -78,19 +80,13 @@ class DiusDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize."""
         self.api = client
         self.platforms = []
-        self.last_data = {}
 
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
 
     async def _async_update_data(self):
         """Update data via library."""
         try:
-
-            data = await self.api.async_get_data()
-            if data == self.last_data:
-                await self.api.reconnect()
-            self.last_data = data
-            return data
+            return await self.api.async_get_data()
         except Exception as exception:
             raise UpdateFailed() from exception
 
