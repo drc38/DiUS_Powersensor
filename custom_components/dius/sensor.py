@@ -56,8 +56,8 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._power: float | None = None
 
     @property
-    def state(self):
-        """Return the state of the sensor."""
+    def native_value(self):
+        """Return the native measurement."""
         data = None
         if self.coordinator.data.get(self.entity_description.key) is not None:
             data = self.coordinator.data.get(self.entity_description.key)
@@ -67,11 +67,6 @@ class DiusSensor(DiusEntity, SensorEntity):
             if self.entity_description.key == Msg_values.sensor.value:
                 self._power += self._config.options.get(W_ADJ)
             self._power = round(self._power)
-        return self._power
-
-    @property
-    def native_value(self):
-        """Return the native measurement."""
         return self._power
 
     @property

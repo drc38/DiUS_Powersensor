@@ -22,6 +22,7 @@ class DiusApiClient:
         self._data = {}
         self._reconnects = 0
         self.tasks = None
+        self._socket.settimeout(60)
 
     @staticmethod
     async def start(host: str, port: int):
