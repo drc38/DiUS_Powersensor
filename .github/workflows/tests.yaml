@@ -79,7 +79,7 @@ jobs:
       - name: Tests suite
         run: |
           pytest \
-            --timeout=9 \
+            --timeout=15 \
             --durations=10 \
             -n auto \
             -rA \
