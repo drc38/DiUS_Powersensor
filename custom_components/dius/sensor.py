@@ -12,7 +12,6 @@ from homeassistant.const import POWER_WATT
 from .const import DOMAIN
 from .const import MAIN_ICON
 from .const import PLUG_ICON
-from .const import SENSOR
 from .const import SENSORS
 from .const import U_CONV
 from .const import W_ADJ
@@ -51,8 +50,7 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._config = config_entry
         self.entity_description = description
         self._extra_attr = {}
-        self._attr_name = ".".join([DOMAIN, self.entity_description.name])
-        self.entity_id = SENSOR + "." + "_".join([DOMAIN, self.entity_description.key])
+        self._attr_name = None
         self._power: float | None = None
 
     @property

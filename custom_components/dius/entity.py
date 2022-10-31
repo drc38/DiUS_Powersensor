@@ -8,6 +8,9 @@ from .const import DOMAIN
 
 
 class DiusEntity(CoordinatorEntity):
+
+    _attr_has_entity_name = True
+
     def __init__(self, coordinator, config_entry, description):
         super().__init__(coordinator)
         self.config_entry = config_entry
