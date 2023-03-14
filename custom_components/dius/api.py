@@ -41,7 +41,7 @@ class DiusApiClient:
             message = self._socket.recv(1024)
             # _LOGGER.debug("Received message %s", message)
             await self.process_message(message)
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
     async def open_socket(self):
         """Open connection and subscribe to data."""

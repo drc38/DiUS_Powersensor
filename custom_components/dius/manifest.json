@@ -1,12 +1,12 @@
 {
   "domain": "dius",
   "name": "DiUS_Powersensor",
-  "documentation": "https://github.com/drc38/DiUS_Powersensor",
-  "issue_tracker": "https://github.com/drc38/DiUS_Powersensor/issues",
-  "iot_class": "local_polling",
-  "version": "0.1.1",
-  "dependencies": [],
-  "config_flow": true,
   "codeowners": ["@drc38"],
-  "requirements": []
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/drc38/DiUS_Powersensor",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/drc38/DiUS_Powersensor/issues",
+  "requirements": [],
+  "version": "0.1.1"
 }
