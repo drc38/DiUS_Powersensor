@@ -18,7 +18,10 @@ from .const import MOCK_OPTIONS
 @pytest.fixture(autouse=True)
 def bypass_setup_fixture():
     """Prevent setup."""
-    with patch("custom_components.dius.async_setup", return_value=True,), patch(
+    with patch(
+        "custom_components.dius.async_setup",
+        return_value=True,
+    ), patch(
         "custom_components.dius.async_setup_entry",
         return_value=True,
     ):
