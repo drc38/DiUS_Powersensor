@@ -1,1 +1,1 @@
-homeassistant>=2022.06.4
+homeassistant>=2023.03
