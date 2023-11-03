@@ -18,7 +18,8 @@ from custom_components.dius.const import (
 from homeassistant.exceptions import ConfigEntryNotReady
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .const import MOCK_CONFIG, MOCK_OPTIONS
+from .const import MOCK_CONFIG
+from .const import MOCK_OPTIONS
 
 
 # We can pass fixtures as defined in conftest.py to tell pytest to use the fixture
@@ -29,7 +30,9 @@ from .const import MOCK_CONFIG, MOCK_OPTIONS
 async def test_setup_unload_and_reload_entry(hass, bypass_get_data, skip_api_start):
     """Test entry setup and unload."""
     # Create a mock entry so we don't have to go through config flow
-    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test", options=MOCK_OPTIONS)
+    config_entry = MockConfigEntry(
+        domain=DOMAIN, data=MOCK_CONFIG, entry_id="test", options=MOCK_OPTIONS
+    )
     config_entry.add_to_hass(hass)
 
     # Set up the entry and assert that the values set during setup are where we expect
