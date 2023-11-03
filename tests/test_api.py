@@ -66,17 +66,17 @@ async def test_api(hass, caplog, socket_enabled):
 
     with mock.patch("socket.socket") as mock_socket:
         config_entry = MockConfigEntry(
-                domain=DOMAIN,
-                data=MOCK_CONFIG_API,
-                entry_id="testapi",
-                options=MOCK_OPTIONS,
-            )
+            domain=DOMAIN,
+            data=MOCK_CONFIG_API,
+            entry_id="testapi",
+            options=MOCK_OPTIONS,
+        )
         config_entry.add_to_hass(hass)
-        await async_setup_entry(hass, config_entry)
 
         for data in scenarios:
             mock_socket.return_value.recv.return_value = data
-
+            if hass.data[DOMAIN][config_entry.entry_id] is None
+                await async_setup_entry(hass, config_entry)
             
             # await hass.async_block_till_done()
             # client = hass.data[DOMAIN][config_entry.entry_id].api
