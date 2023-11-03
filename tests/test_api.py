@@ -74,6 +74,7 @@ async def test_api(hass, caplog, socket_enabled):
                 entry_id="testapi",
                 options=MOCK_OPTIONS,
             )
+            config_entry.add_to_hass(hass)
             await async_setup_entry(hass, config_entry)
             # await hass.async_block_till_done()
             # client = hass.data[DOMAIN][config_entry.entry_id].api
