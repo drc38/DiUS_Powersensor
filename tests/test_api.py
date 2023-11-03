@@ -75,7 +75,7 @@ async def test_api(hass, caplog, socket_enabled):
 
         for data in scenarios:
             mock_socket.return_value.recv.return_value = data
-            if hass.data[DOMAIN][config_entry.entry_id] is None:
+            if hass.data.get(DOMAIN) is None:
                 await async_setup_entry(hass, config_entry)
             
             # await hass.async_block_till_done()
