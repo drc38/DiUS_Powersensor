@@ -44,7 +44,19 @@ def skip_api_start(socket_enabled):
 @pytest.fixture(name="bypass_get_data")
 def bypass_get_data_fixture():
     """Skip calls to get data from API."""
-    with patch("custom_components.dius.DiusApiClient.async_get_data"):
+    data = {
+            "mac": "2cf4320aaaa",
+            "device": "sensor",
+            "summation": 21931891707,
+            "duration": 30,
+            "type": "instant_power",
+            "batteryMicrovolt": 4143072,
+            "unit": "U",
+            "starttime": 1653477217,
+            "power": 93184,
+    }
+    data = json.dumps(data).encode("utf-8")
+    with patch("custom_components.dius.DiusApiClient.async_get_data", return_value=data):
         yield
 
 
