@@ -65,22 +65,24 @@ async def test_api(hass, caplog, socket_enabled):
     scenarios = [sens, plug, s_warn, s_exp]
 
     with mock.patch("socket.socket") as mock_socket:
-        for data in scenarios:
-            mock_socket.return_value.recv.return_value = data
-
-            config_entry = MockConfigEntry(
+        config_entry = MockConfigEntry(
                 domain=DOMAIN,
                 data=MOCK_CONFIG_API,
                 entry_id="testapi",
                 options=MOCK_OPTIONS,
             )
-            config_entry.add_to_hass(hass)
-            await async_setup_entry(hass, config_entry)
+        config_entry.add_to_hass(hass)
+        await async_setup_entry(hass, config_entry)
+
+        for data in scenarios:
+            mock_socket.return_value.recv.return_value = data
+
+            
             # await hass.async_block_till_done()
             # client = hass.data[DOMAIN][config_entry.entry_id].api
 
-            await asyncio.sleep(1)
-            await async_unload_entry(hass, config_entry)
+        await asyncio.sleep(1)
+        await async_unload_entry(hass, config_entry)
 
     # To test the api submodule, we first create an instance of our API client
     # api = DiusApiClient(MOCK_CONFIG[CONF_HOST], MOCK_CONFIG[CONF_PORT])
