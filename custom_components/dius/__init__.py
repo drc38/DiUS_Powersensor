@@ -84,7 +84,7 @@ class DiusDataUpdateCoordinator(DataUpdateCoordinator):
             name=DOMAIN,
             update_interval=SCAN_INTERVAL,
             update_method=self.async_update_data,
-    )
+        )
 
     async def async_update_data(self):
         """Update data via library."""
@@ -100,7 +100,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.api.stop()
     await coordinator.async_shutdown()
 
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded:
         hass.data[DOMAIN].pop(entry.entry_id)
 
