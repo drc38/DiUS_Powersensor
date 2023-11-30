@@ -85,10 +85,3 @@ class DiusSensor(DiusEntity, SensorEntity):
                 "HA_reconnects": self.coordinator.data.get("reconnects")
             }
         return data
-
-    @property
-    def should_poll(self):
-        """Return True if entity has to be polled for state.
-        False if entity pushes its state to HA.
-        """
-        return True
