@@ -106,7 +106,7 @@ jobs:
       - name: Push changes
         if: |
           steps.changed_files.outputs.files_changed == 'true' &&
-          ${{ github.event_name }} == 'push'
+          github.event_name == 'push'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
