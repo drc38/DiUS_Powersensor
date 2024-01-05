@@ -21,6 +21,7 @@ from .enums import Msg_values
 
 POWER_WATT = UnitOfPower.WATT
 
+
 @dataclass
 class DiusSensorDescription(SensorEntityDescription):
     """Class to describe a Sensor entity."""
