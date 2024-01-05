@@ -7,7 +7,7 @@ from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorEntityDescription
 from homeassistant.components.sensor import SensorStateClass
-from homeassistant.const import POWER_WATT
+from homeassistant.const import UnitOfPower
 
 from .const import DOMAIN
 from .const import MAIN_ICON
@@ -19,6 +19,7 @@ from .entity import DiusEntity
 from .enums import Msg_keys
 from .enums import Msg_values
 
+POWER_WATT = UnitOfPower.WATT
 
 @dataclass
 class DiusSensorDescription(SensorEntityDescription):
