@@ -1,10 +1,10 @@
 """DiusEntity class"""
-from custom_components.dius.enums import Msg_keys
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION
 from .const import DOMAIN
+from .enums import Msg_keys
 
 
 class DiusEntity(CoordinatorEntity):
@@ -14,12 +14,8 @@ class DiusEntity(CoordinatorEntity):
         super().__init__(coordinator)
         self.config_entry = config_entry
         self.entity_description = description
-
-    @property
-    def _attr_unique_id(self):
-        """Return a unique ID to use for this entity."""
         data = self.coordinator.data.get(self.entity_description.key)
-        return data.get(Msg_keys.mac.value)
+        self._attr_unique_id = data.get(Msg_keys.mac.value)
 
     @property
     def device_info(self) -> DeviceInfo:
