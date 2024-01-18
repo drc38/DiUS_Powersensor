@@ -1,4 +1,5 @@
 """DiusEntity class"""
+from .enums import Msg_kyes
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -13,6 +14,8 @@ class DiusEntity(CoordinatorEntity):
         super().__init__(coordinator)
         self.config_entry = config_entry
         self.entity_description = description
+        data = self.coordinator.data.get(self.entity_description.key)
+        self._attr_unique_id = data.get(Msg_keys.mac.value)
 
     @property
     def device_info(self) -> DeviceInfo:

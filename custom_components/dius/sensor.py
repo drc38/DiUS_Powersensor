@@ -54,8 +54,6 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._extra_attr = {}
         self._attr_name = None
         self._power: float | None = None
-        data = self.coordinator.data.get(self.entity_description.key)
-        self._attr_unique_id = data.get(Msg_keys.mac.value)
 
     @property
     def native_value(self):
@@ -89,4 +87,3 @@ class DiusSensor(DiusEntity, SensorEntity):
                 "HA_reconnects": self.coordinator.data.get("reconnects")
             }
         return data
-
