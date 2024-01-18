@@ -1,5 +1,4 @@
 """DiusEntity class"""
-from custom_components.dius.enums import Msg_keys
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
