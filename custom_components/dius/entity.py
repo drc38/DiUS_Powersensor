@@ -1,10 +1,10 @@
 """DiusEntity class"""
-from .enums import Msg_kyes
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION
 from .const import DOMAIN
+from .enums import Msg_kyes
 
 
 class DiusEntity(CoordinatorEntity):
