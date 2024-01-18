@@ -54,6 +54,8 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._extra_attr = {}
         self._attr_name = None
         self._power: float | None = None
+        data = self.coordinator.data.get(self.entity_description.key)
+        self._attr_unique_id = data.get(Msg_keys.mac.value)
 
     @property
     def native_value(self):
@@ -88,8 +90,3 @@ class DiusSensor(DiusEntity, SensorEntity):
             }
         return data
 
-    @property
-    def _attr_unique_id(self):
-        """Return a unique ID to use for this entity."""
-        data = self.coordinator.data.get(self.entity_description.key)
-        return data.get(Msg_keys.mac.value)
