@@ -52,7 +52,6 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._config = config_entry
         self.entity_description = description
         self._extra_attr = {}
-        self._attr_name = None
         self._power: float | None = None
 
     @property
