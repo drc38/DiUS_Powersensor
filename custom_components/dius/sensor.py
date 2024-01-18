@@ -52,6 +52,7 @@ class DiusSensor(DiusEntity, SensorEntity):
         self._config = config_entry
         self.entity_description = description
         self._extra_attr = {}
+        self._attr_name = None
         self._power: float | None = None
 
     @property
@@ -86,3 +87,9 @@ class DiusSensor(DiusEntity, SensorEntity):
                 "HA_reconnects": self.coordinator.data.get("reconnects")
             }
         return data
+
+    @property
+    def _attr_unique_id(self):
+        """Return a unique ID to use for this entity."""
+        data = self.coordinator.data.get(self.entity_description.key)
+        return data.get(Msg_keys.mac.value)

@@ -16,12 +16,6 @@ class DiusEntity(CoordinatorEntity):
         self.entity_description = description
 
     @property
-    def _attr_unique_id(self):
-        """Return a unique ID to use for this entity."""
-        data = self.coordinator.data.get(self.entity_description.key)
-        return data.get(Msg_keys.mac.value)
-
-    @property
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
             configuration_url=ATTRIBUTION,
