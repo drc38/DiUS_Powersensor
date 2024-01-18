@@ -4,7 +4,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION
 from .const import DOMAIN
-from .enums import Msg_kyes
+from .enums import Msg_keys
 
 
 class DiusEntity(CoordinatorEntity):
