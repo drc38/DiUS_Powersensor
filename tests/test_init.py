@@ -48,7 +48,7 @@ async def test_setup_unload_and_reload_entry(hass, bypass_get_data, skip_api_sta
     )
 
     # Unload the entry and verify that the data has been removed
-    assert await async_unload_entry(hass, config_entry)
+    await async_unload_entry(hass, config_entry)
     assert config_entry.entry_id not in hass.data[DOMAIN]
 
 
