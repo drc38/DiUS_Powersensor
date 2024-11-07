@@ -31,6 +31,7 @@ async def test_setup_unload_and_reload_entry(hass, bypass_get_data, skip_api_sta
     # Create a mock entry so we don't have to go through config flow
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
     config_entry.add_to_hass(hass)
+    await hass.async_block_till_done()
 
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
