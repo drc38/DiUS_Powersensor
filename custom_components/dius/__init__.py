@@ -52,7 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     # setup options flow with defaults
     if not entry.options:
         options = {"sensor": True, "plug": True, "U_conv": 19.3, "W_adj": 0}
-        await hass.config_entries.async_update_entry(self.entry, options=options)
+        await hass.config_entries.async_update_entry(entry, options=options)
         # probably a better approach to this...
 
     for platform in PLATFORMS:
