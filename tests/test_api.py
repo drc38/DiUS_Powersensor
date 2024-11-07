@@ -6,7 +6,6 @@ from datetime import timedelta
 from unittest import mock
 from unittest.mock import patch
 
-from custom_components.dius import async_setup_entry
 from custom_components.dius import async_unload_entry
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -74,8 +73,11 @@ async def test_api(hass, caplog, socket_enabled):
                 entry_id="testapi",
                 options=MOCK_OPTIONS,
             )
-            await async_setup_entry(hass, config_entry)
-            # await hass.async_block_till_done()
+            config_entry.add_to_hass(hass)
+            await hass.async_block_till_done()
+
+            await hass.config_entries.async_setup(config_entry.entry_id)
+            await hass.async_block_till_done()
             # client = hass.data[DOMAIN][config_entry.entry_id].api
 
             await asyncio.sleep(1)
