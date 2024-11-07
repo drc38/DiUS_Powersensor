@@ -30,11 +30,14 @@ async def test_setup_unload_and_reload_entry(hass, bypass_get_data, skip_api_sta
     """Test entry setup and unload."""
     # Create a mock entry so we don't have to go through config flow
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
+    config_entry.add_to_hass(hass)
+
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
 
     # Set up the entry and assert that the values set during setup are where we expect
     # them to be. Because we have patched the DiusDataUpdateCoordinator.async_get_data
     # call, no code from custom_components/dius/api.py actually runs.
-    assert await async_setup_entry(hass, config_entry)
     assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
     assert isinstance(
         hass.data[DOMAIN][config_entry.entry_id], DiusDataUpdateCoordinator
