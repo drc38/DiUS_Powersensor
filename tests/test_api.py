@@ -6,7 +6,6 @@ from datetime import timedelta
 from unittest import mock
 from unittest.mock import patch
 
-from custom_components.dius import async_setup_entry
 from custom_components.dius import async_unload_entry
 from custom_components.dius.const import DOMAIN
 from pytest_homeassistant_custom_component.common import MockConfigEntry

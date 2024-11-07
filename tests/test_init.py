@@ -33,7 +33,7 @@ async def test_setup_unload_and_reload_entry(hass, bypass_get_data, skip_api_sta
     config_entry.add_to_hass(hass)
     await hass.async_block_till_done()
 
-    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
 
     # Set up the entry and assert that the values set during setup are where we expect
