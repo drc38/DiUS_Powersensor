@@ -1,4 +1,5 @@
 """Global fixtures for DiUS_Powersensor integration."""
+
 import json
 from unittest.mock import patch
 

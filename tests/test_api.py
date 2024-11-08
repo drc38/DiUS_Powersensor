@@ -1,4 +1,5 @@
 """Tests for DiUS_Powersensor api."""
+
 import asyncio
 import json
 import socket

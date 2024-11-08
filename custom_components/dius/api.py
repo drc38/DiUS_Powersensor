@@ -1,4 +1,5 @@
 """Dius API Client."""
+
 import asyncio
 import json
 import logging

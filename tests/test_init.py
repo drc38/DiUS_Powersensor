@@ -1,4 +1,5 @@
 """Test DiUS_Powersensor setup process."""
+
 import pytest
 from custom_components.dius import (
     async_reload_entry,
