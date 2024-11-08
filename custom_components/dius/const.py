@@ -1,4 +1,5 @@
 """Constants for DiUS_Powersensor."""
+
 from .enums import Msg_values
 
 # Base component constants

@@ -1,4 +1,5 @@
 """DiusEntity class"""
+
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 

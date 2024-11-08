@@ -4,6 +4,7 @@ Custom integration to integrate DiUS_Powersensor with Home Assistant.
 For more details about this integration, please refer to
 https://github.com/drc38/DiUS_Powersensor
 """
+
 import asyncio
 import logging
 from datetime import timedelta

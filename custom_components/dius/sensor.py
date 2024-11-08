@@ -1,4 +1,5 @@
 """Sensor platform for DiUS_Powersensor."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

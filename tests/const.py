@@ -1,4 +1,5 @@
 """Constants for DiUS_Powersensor tests."""
+
 from custom_components.dius.const import (
     CONF_HOST,
 )
