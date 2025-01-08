@@ -1,5 +1,5 @@
 {
-  "name": "DiUS_Powersensor",
+  "name": "DiUS Powersensor",
   "homeassistant": "2023.03.0",
   "render_readme": true,
   "zip_release": true,
